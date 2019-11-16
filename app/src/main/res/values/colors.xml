@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#282828</color>
+    <color name="black">#000</color>
+    <color name="colorPrimaryDark">#ed8a0a</color>
+    <color name="colorAccent">#ffd700</color>
+    <color name="textline">#ed8a0a</color>
+    <color name="bgcolor">#282828</color>
+    <color name="header_back_color">#ed8a0a</color>
+    <color name="menu_bar_color">#fc9107</color>
+    <color name="text_color">#ffffff</color>
+    <color name="tranfer_color">#302828</color>
+
+    <color name="current">#D81B60</color>
+    <color name="past">#D81B60</color>
+    <color name="earnings">#D81B60</color>
+
+
+</resources>
