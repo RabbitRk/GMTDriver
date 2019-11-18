@@ -1,4 +1,4 @@
-package com.rabbitt.gmtdriver;
+package com.rabbitt.gmtdriver.CurrentRide;
 
 import android.content.Context;
 import android.net.Uri;
@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.rabbitt.gmtdriver.R;
 import com.ramotion.foldingcell.FoldingCell;
 
 

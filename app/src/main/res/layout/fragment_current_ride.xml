@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".CurrentRide">
+    tools:context=".CurrentRide.CurrentRide">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/tool"
@@ -20,7 +20,7 @@
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimaryDark"
             app:popupTheme="@style/Login_page.PopupOverlay"
-            app:title="Book now" />
+            app:title="Available Rides" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -29,8 +29,6 @@
         android:layout_width="match_parent"
         folding-cell:animationDuration="1000"
         folding-cell:backSideColor="@color/colorPrimary"
-        folding-cell:additionalFlipsCount="2"
-        folding-cell:cameraHeight="30"
         android:layout_height="wrap_content">
         <FrameLayout
             android:id="@+id/cell_content_view"
@@ -54,35 +52,5 @@
                 android:background="@android:color/holo_blue_dark" />
         </FrameLayout>
     </com.ramotion.foldingcell.FoldingCell>
-<!--    <com.ramotion.foldingcell.FoldingCell-->
-<!--        android:id="@+id/folding_cell"-->
-<!--        android:layout_width="match_parent"-->
-<!--        folding-cell:animationDuration="1000"-->
-<!--        folding-cell:backSideColor="@color/colorPrimary"-->
-<!--        folding-cell:additionalFlipsCount="2"-->
-<!--        folding-cell:cameraHeight="30"-->
-<!--        android:layout_height="wrap_content">-->
-<!--        <FrameLayout-->
-<!--            android:id="@+id/cell_content_view"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:background="@android:color/holo_green_dark"-->
-<!--            android:visibility="gone">-->
-<!--            <TextView-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:text="content"-->
-<!--                android:layout_height="250dp" />-->
-<!--        </FrameLayout>-->
-<!--        <FrameLayout-->
-<!--            android:id="@+id/cell_title_view"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content">-->
-<!--            <TextView-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="100dp"-->
-<!--                android:text="Title"-->
-<!--                android:background="@android:color/holo_blue_dark" />-->
-<!--        </FrameLayout>-->
-<!--    </com.ramotion.foldingcell.FoldingCell>-->
 
 </LinearLayout>

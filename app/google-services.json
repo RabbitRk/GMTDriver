@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "286879065430",
+    "firebase_url": "https://gmt-driver-rk.firebaseio.com",
+    "project_id": "gmt-driver-rk",
+    "storage_bucket": "gmt-driver-rk.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:286879065430:android:f8f39cc92b3071ebab62f7",
+        "android_client_info": {
+          "package_name": "com.rabbitt.gmtdriver"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "286879065430-3qgqdmvg10mfi6e7n14vq0j216s72dt2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.rabbitt.gmtdriver",
+            "certificate_hash": "aba49910ceea5daf36e01e2eaa0befda2e35fef9"
+          }
+        },
+        {
+          "client_id": "286879065430-chkvplet39h54iks3ar27livigqd1q4f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAntZzFhCEN7QdOaL5kmU03nSjex3f-kMU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "286879065430-chkvplet39h54iks3ar27livigqd1q4f.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
