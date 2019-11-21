@@ -5,48 +5,44 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.rabbitt.gmtdriver.Adapter.CurrentRideAdapter;
+import com.rabbitt.gmtdriver.Adapter.RecycleAdapter;
 import com.rabbitt.gmtdriver.R;
 import com.ramotion.foldingcell.FoldingCell;
 
+import java.util.ArrayList;
+import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link CurrentRide.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link CurrentRide#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class CurrentRide extends Fragment implements FoldingCell.OnClickListener {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+public class CurrentRide extends Fragment implements CurrentRideAdapter.OnRecycleItemListener {
+
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private static final String TAG = "CurrentRide";
 
-    // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
 
+    List<RecycleAdapter> productAdapter;
+    List<RecycleAdapter> data = new ArrayList<>();
+    RecycleAdapter model = null;
+    CurrentRideAdapter recycleadapter;
+    RecyclerView recyclerView;
+
     public CurrentRide() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment current_ride.
-     */
-    // TODO: Rename and change types and number of parameters
     public static CurrentRide newInstance(String param1, String param2) {
         CurrentRide fragment = new CurrentRide();
         Bundle args = new Bundle();
@@ -66,24 +62,28 @@ public class CurrentRide extends Fragment implements FoldingCell.OnClickListener
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_current_ride, container, false);
+        recyclerView = view.findViewById(R.id.c_recycler);
+        productAdapter = new ArrayList<>();
 
-        final FoldingCell fc = view.findViewById(R.id.folding_cell);
+//        final FoldingCell fc = view.findViewById(R.id.folding_cell);
+//
+//
+//        // attach click listener to folding cell
+//        fc.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                fc.toggle(false);
+//            }
+//        });
 
-        // attach click listener to folding cell
-        fc.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                fc.toggle(false);
-            }
-        });
+        updaterecyclershit();
         return view;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
@@ -107,21 +107,35 @@ public class CurrentRide extends Fragment implements FoldingCell.OnClickListener
         mListener = null;
     }
 
-    @Override
-    public void onClick(View v) {
+    private void updaterecyclershit(/*List<RecycleAdapter> datam*/) {
 
+        for (int i = 0; i < 5; i++) {
+            model = new RecycleAdapter();
+            model.setTitle(String.valueOf(i));
+            //url to be included
+            model.setContent(String.valueOf(i));
+            data.add(model);
+        }
+        Log.i(TAG, "Current thread:update " + Thread.currentThread().getId());
+        if (data != null) {
+
+            recycleadapter = new CurrentRideAdapter(data, this, this);
+            Log.i("HIteshdata", "" + data);
+            LinearLayoutManager reLayoutManager = new LinearLayoutManager(getActivity());
+            recyclerView.setLayoutManager(reLayoutManager);
+            reLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+            recyclerView.setItemAnimator(new DefaultItemAnimator());
+            recyclerView.setAdapter(recycleadapter);
+            recycleadapter.notifyDataSetChanged();
+        }
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
+    @Override
+    public void OnItemClick(int position) {
+        Log.i(TAG, "OnItemClick: "+position);
+    }
+
+
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);

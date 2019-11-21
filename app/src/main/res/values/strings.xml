@@ -4,6 +4,14 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="title_activity_driver_job_alert">driverJob_alert</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="phonenumber">Phone Number</string>
+    <string name="gotmytrip_password">Password</string>
+    <string name="title_activity_splash_screen">SplashScreen</string>
+    <string name="title_activity_MainActivity">GMT</string>
+    <string name="Register_btn">Login</string>
+    <string name="title_activity_maps">Map</string>
 </resources>

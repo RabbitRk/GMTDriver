@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:folding-cell="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -24,33 +23,16 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <com.ramotion.foldingcell.FoldingCell
-        android:id="@+id/folding_cell"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeme"
         android:layout_width="match_parent"
-        folding-cell:animationDuration="1000"
-        folding-cell:backSideColor="@color/colorPrimary"
-        android:layout_height="wrap_content">
-        <FrameLayout
-            android:id="@+id/cell_content_view"
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/c_recycler"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@android:color/holo_green_dark"
-            android:visibility="gone">
-            <TextView
-                android:layout_width="match_parent"
-                android:text="content"
-                android:layout_height="250dp" />
-        </FrameLayout>
-        <FrameLayout
-            android:id="@+id/cell_title_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:text="Title"
-                android:background="@android:color/holo_blue_dark" />
-        </FrameLayout>
-    </com.ramotion.foldingcell.FoldingCell>
+            android:layout_height="wrap_content"/>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 </LinearLayout>
