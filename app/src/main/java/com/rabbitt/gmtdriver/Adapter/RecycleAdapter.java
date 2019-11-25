@@ -1,23 +1,56 @@
 package com.rabbitt.gmtdriver.Adapter;
 
 public class RecycleAdapter {
-    private String book_id, origin, destin, v_type, t_type, time;
-    private String title, content;
+    private String book_id, origin, destin, v_type, t_type;
+//    private String title, content;
 
-    public String getTitle() {
-        return title;
+    public String timeat;
+    public String travel_type;
+//    public String book_id;
+//    public String origin, destination;
+//    public String v_type;
+    public String package_id;
+    public String prefix;
+    public String returnD;
+
+    public String getTimeat() {
+        return timeat;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setTimeat(String timeat) {
+        this.timeat = timeat;
     }
 
-    public String getContent() {
-        return content;
+    public String getTravel_type() {
+        return travel_type;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setTravel_type(String travel_type) {
+        this.travel_type = travel_type;
+    }
+
+    public String getPackage_id() {
+        return package_id;
+    }
+
+    public void setPackage_id(String package_id) {
+        this.package_id = package_id;
+    }
+
+    public String getPrefix() {
+        return prefix;
+    }
+
+    public void setPrefix(String prefix) {
+        this.prefix = prefix;
+    }
+
+    public String getReturnD() {
+        return returnD;
+    }
+
+    public void setReturnD(String returnD) {
+        this.returnD = returnD;
     }
 
     public String getBook_id() {
@@ -58,13 +91,5 @@ public class RecycleAdapter {
 
     public void setT_type(String t_type) {
         this.t_type = t_type;
-    }
-
-    public String getTime() {
-        return time;
-    }
-
-    public void setTime(String time) {
-        this.time = time;
     }
 }

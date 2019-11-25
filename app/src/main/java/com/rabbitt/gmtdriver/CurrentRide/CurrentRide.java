@@ -16,6 +16,8 @@ import android.view.ViewGroup;
 
 import com.rabbitt.gmtdriver.Adapter.CurrentRideAdapter;
 import com.rabbitt.gmtdriver.Adapter.RecycleAdapter;
+import com.rabbitt.gmtdriver.DBHelper.dbHelper;
+import com.rabbitt.gmtdriver.DBHelper.recycleAdapter;
 import com.rabbitt.gmtdriver.R;
 import com.ramotion.foldingcell.FoldingCell;
 
@@ -33,11 +35,11 @@ public class CurrentRide extends Fragment implements CurrentRideAdapter.OnRecycl
 
     private OnFragmentInteractionListener mListener;
 
-    List<RecycleAdapter> productAdapter;
-    List<RecycleAdapter> data = new ArrayList<>();
+    List<RecycleAdapter> rideAdapter = new ArrayList<>();
     RecycleAdapter model = null;
     CurrentRideAdapter recycleadapter;
     RecyclerView recyclerView;
+    dbHelper database;
 
     public CurrentRide() {
         // Required empty public constructor
@@ -67,7 +69,13 @@ public class CurrentRide extends Fragment implements CurrentRideAdapter.OnRecycl
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_current_ride, container, false);
         recyclerView = view.findViewById(R.id.c_recycler);
-        productAdapter = new ArrayList<>();
+        rideAdapter = new ArrayList<>();
+
+        database = new dbHelper(getContext());
+
+//        database.insertdata("1", "11.09.2108", "Cuddalore", "Cuddalore", "1", "CTY","04-12-2019"); 
+
+        rideAdapter = database.getdata();
 
 //        final FoldingCell fc = view.findViewById(R.id.folding_cell);
 //
@@ -80,7 +88,7 @@ public class CurrentRide extends Fragment implements CurrentRideAdapter.OnRecycl
 //            }
 //        });
 
-        updaterecyclershit();
+        updaterecyclershit(rideAdapter);
         return view;
     }
 
@@ -107,20 +115,20 @@ public class CurrentRide extends Fragment implements CurrentRideAdapter.OnRecycl
         mListener = null;
     }
 
-    private void updaterecyclershit(/*List<RecycleAdapter> datam*/) {
+    private void updaterecyclershit(List<RecycleAdapter> datam) {
 
-        for (int i = 0; i < 5; i++) {
-            model = new RecycleAdapter();
-            model.setTitle(String.valueOf(i));
-            //url to be included
-            model.setContent(String.valueOf(i));
-            data.add(model);
-        }
+//        for (int i = 0; i < 5; i++) {
+//            model = new RecycleAdapter();
+//            model.setTitle(String.valueOf(i));
+//            //url to be included
+//            model.setContent(String.valueOf(i));
+//            data.add(model);
+//        }
         Log.i(TAG, "Current thread:update " + Thread.currentThread().getId());
-        if (data != null) {
+        if (datam != null) {
 
-            recycleadapter = new CurrentRideAdapter(data, this, this);
-            Log.i("HIteshdata", "" + data);
+            recycleadapter = new CurrentRideAdapter(datam, this, this);
+            Log.i("HIteshdata", "" + datam);
             LinearLayoutManager reLayoutManager = new LinearLayoutManager(getActivity());
             recyclerView.setLayoutManager(reLayoutManager);
             reLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);

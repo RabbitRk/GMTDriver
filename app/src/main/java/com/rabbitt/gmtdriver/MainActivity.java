@@ -1,5 +1,6 @@
 package com.rabbitt.gmtdriver;
 
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.rabbitt.gmtdriver.CurrentRide.CurrentRide;
 import com.rabbitt.gmtdriver.Preferences.prefsManager;
+import com.rabbitt.gmtdriver.Utils.Config;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener, CurrentRide.OnFragmentInteractionListener{
 
@@ -27,6 +29,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         prefsManager = new prefsManager(getApplicationContext());
         prefsManager.setFirstTimeLaunch(true);
 
+        SharedPreferences sharedPreferences = this.getSharedPreferences(Config.SHARED_PREF, MODE_PRIVATE);
+        String token = sharedPreferences.getString("token","");
+        Log.i(TAG, "onCreate: Token value: "+token);
         init();
 
     }

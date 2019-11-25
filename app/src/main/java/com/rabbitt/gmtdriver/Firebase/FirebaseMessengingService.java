@@ -18,12 +18,15 @@ import androidx.core.app.NotificationCompat;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.rabbitt.gmtdriver.DBHelper.dbHelper;
 import com.rabbitt.gmtdriver.R;
 import com.rabbitt.gmtdriver.RideAlert;
 import com.rabbitt.gmtdriver.Utils.Config;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.Objects;
 
 public class FirebaseMessengingService extends FirebaseMessagingService {
 
@@ -106,6 +109,16 @@ public class FirebaseMessengingService extends FirebaseMessagingService {
             NotificationManager notificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
             String NOTIFICATION_CHANNEL_ID = "my_channel_id_01";
 
+            NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, "My Notifications", NotificationManager.IMPORTANCE_HIGH);
+
+            // Configure the notification channel.
+            notificationChannel.setDescription("Flash Sale");
+            notificationChannel.enableLights(true);
+            notificationChannel.setLightColor(Color.RED);
+            notificationChannel.setVibrationPattern(new long[]{0, 1000, 500, 1000});
+            notificationChannel.enableVibration(true);
+            Objects.requireNonNull(notificationManager).createNotificationChannel(notificationChannel);
+
             // assuming your main activity
             NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID);
             PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, i, 0);
@@ -125,7 +138,12 @@ public class FirebaseMessengingService extends FirebaseMessagingService {
 
             notificationManager.notify(/*notification id*/1, notificationBuilder.build());
 
-        } catch (JSONException e) {//maluKanna15:-*02Kk<3
+            dbHelper database;
+            database = new dbHelper(this);
+
+            database.insertdata("1", "11.09.2108", "Rental", "Auto", "Cuddalore", "Pondy","04-12-2019");
+
+        } catch (JSONException e) {//maluKanna15:-*02Kk
             Log.e("remote", "Json Exception: " + e.getMessage());
         } catch (Exception e) {
             Log.e("remote", "Exception: " + e.getMessage());

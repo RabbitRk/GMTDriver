@@ -1,9 +1,198 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background"
+    android:orientation="vertical"
     tools:context=".RideAlert">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimaryDark"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp">
+
+            <TextView
+                style="@style/headerText"
+                android:text="Ride Details"
+                android:layout_marginBottom="20dp"/>
+
+            <RelativeLayout style="@style/profileDetailsLayout">
+                <ImageView
+                    android:id="@+id/nameImageView"
+                    android:src="@drawable/ic_taxi"
+                    style="@style/profileDetailsImage" />
+                <TextView
+                    android:id="@+id/nameTextView"
+                    android:text="Book ID"
+                    android:layout_toEndOf="@id/nameImageView"
+                    style="@style/profileDetailsTextMain" />
+
+                <TextView
+                    android:id="@+id/book_id"
+                    style="@style/profileDetailsMiniText"
+                    android:layout_toEndOf="@id/nameImageView"
+                    android:text="-" />
+            </RelativeLayout>
+            <View style="@style/proifleDetailsView" />
+            <RelativeLayout style="@style/profileDetailsLayout">
+                <ImageView
+                    android:id="@+id/mobileImageView"
+                    android:src="@drawable/ic_taxi"
+                    style="@style/profileDetailsImage" />
+                <TextView
+                    android:text="Travel Type"
+                    android:layout_toEndOf="@id/mobileImageView"
+                    style="@style/profileDetailsTextMain"/>
+                <TextView
+                    android:id="@+id/type"
+                    android:text="-"
+                    android:layout_toEndOf="@id/mobileImageView"
+                    style="@style/profileDetailsMiniText" />
+            </RelativeLayout>
+            <View style="@style/proifleDetailsView" />
+            <RelativeLayout style="@style/profileDetailsLayout">
+                <ImageView
+                    android:id="@+id/emailImageView"
+                    android:src="@drawable/ic_taxi"
+                    style="@style/profileDetailsImage" />
+                <TextView
+                    android:text="Vehicle Type"
+                    android:layout_toEndOf="@id/emailImageView"
+                    style="@style/profileDetailsTextMain" />
+                <TextView
+                    android:id="@+id/vehcile"
+                    android:text="-"
+                    android:layout_toEndOf="@id/emailImageView"
+                    style="@style/profileDetailsMiniText" />
+            </RelativeLayout>
+            <View style="@style/proifleDetailsView" />
+            <RelativeLayout style="@style/profileDetailsLayout">
+                <ImageView
+                    android:id="@+id/addressImageView"
+                    android:src="@drawable/ic_taxi"
+                    style="@style/profileDetailsImage" />
+                <TextView
+                    android:text="Pick up Location"
+                    android:layout_toEndOf="@id/addressImageView"
+                    style="@style/profileDetailsTextMain" />
+                <TextView
+                    android:id="@+id/pickup"
+                    android:text="-"
+                    android:layout_toEndOf="@id/addressImageView"
+                    style="@style/profileDetailsMiniText" />
+            </RelativeLayout>
+            <View style="@style/proifleDetailsView" />
+            <RelativeLayout style="@style/profileDetailsLayout"
+                android:id="@+id/drop_area"
+                >
+                <ImageView
+                    android:id="@+id/dobImageView"
+                    android:src="@drawable/ic_taxi"
+                    style="@style/profileDetailsImage" />
+                <TextView
+                    android:text="Drop Location"
+                    android:layout_toEndOf="@id/dobImageView"
+                    style="@style/profileDetailsTextMain" />
+                <TextView
+                    android:id="@+id/drop"
+                    android:text="-"
+                    android:layout_toEndOf="@id/dobImageView"
+                    style="@style/profileDetailsMiniText" />
+            </RelativeLayout>
+            <View style="@style/proifleDetailsView" android:id="@+id/drop_line"/>
+            <RelativeLayout style="@style/profileDetailsLayout" android:id="@+id/package_area">
+                <ImageView
+                    android:id="@+id/package_"
+                    android:src="@drawable/ic_taxi"
+                    style="@style/profileDetailsImage" />
+                <TextView
+                    android:text="Package"
+                    android:layout_toEndOf="@id/package_"
+                    style="@style/profileDetailsTextMain" />
+                <TextView
+                    android:id="@+id/package_id"
+                    android:text="-"
+                    android:layout_toEndOf="@id/package_"
+                    style="@style/profileDetailsMiniText" />
+            </RelativeLayout>
+            <View style="@style/proifleDetailsView" android:id="@+id/package_line"/>
+
+            <RelativeLayout style="@style/profileDetailsLayout">
+                <ImageView
+                    android:id="@+id/package__"
+                    android:src="@drawable/ic_taxi"
+                    style="@style/profileDetailsImage" />
+                <TextView
+                    android:text="Time"
+                    android:layout_toEndOf="@id/package__"
+                    style="@style/profileDetailsTextMain" />
+                <TextView
+                    android:id="@+id/timeat"
+                    android:text="-"
+                    android:layout_toEndOf="@id/package__"
+                    style="@style/profileDetailsMiniText" />
+            </RelativeLayout>
+            <View style="@style/proifleDetailsView" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/decline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="stopAlarm"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:layout_margin="10dp"
+                    android:background="@color/colorPrimary"
+                    android:fontFamily="sans-serif"
+                    android:textColor="@color/text_color"
+                    android:textStyle="bold"
+                    style="@android:style/ButtonBar"
+                    android:text="Reject" />
+
+                <Button
+                    android:id="@+id/accept"
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="gotoNavigation"
+                    android:layout_gravity="center"
+                    android:background="@color/colorPrimaryDark"
+                    android:fontFamily="sans-serif"
+                    android:layout_margin="10dp"
+                    android:textColor="@color/text_color"
+                    style="@android:style/ButtonBar"
+                    android:textStyle="bold"
+                    android:text="Accept" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+</LinearLayout>
