@@ -5,6 +5,8 @@
     android:layout_height="match_parent"
     tools:context=".MapActivity.MapsActivity">
 
+
+
     <ProgressBar
         android:id="@+id/progressBar_cyclic"
         android:layout_width="wrap_content"
@@ -21,16 +23,31 @@
         android:layout_height="match_parent"
         android:layout_above="@+id/liner"
         android:layout_alignParentTop="true"
-        tools:context=".MapsActivity" />
+        tools:context=".MapActivity.MapsActivity" />
 
     <LinearLayout
         android:id="@+id/liner"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="300dp"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="0dp"
         android:background="@color/tranfer_color"
-        android:orientation="horizontal">
+        android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/decline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimaryDark"
+            android:textColor="@color/text_color"
+            android:textStyle="bold"
+            android:layout_margin="5dp"
+            android:onClick="decline"
+            android:layout_weight="1"
+            android:text="Cancel" />
 
         <Button
             android:id="@+id/accept"
@@ -43,25 +60,53 @@
             android:onClick="getRide"
             android:layout_weight="1"
             android:text="Get Ride" />
+    </LinearLayout>
 
-        <Button
-            android:id="@+id/decline"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/colorPrimaryDark"
-            android:textColor="@color/text_color"
-            android:textStyle="bold"
-            android:layout_margin="5dp"
-            android:onClick="decline"
-            android:layout_weight="1"
-            android:text="Decline" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/dist"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/text_color"
-            android:text="0" />
+            <Button
+                android:id="@+id/start"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimaryDark"
+                android:textColor="@color/text_color"
+                android:textStyle="bold"
+                android:layout_margin="5dp"
+                android:onClick="startTimer"
+                android:layout_weight="1"
+                android:text="Cancel" />
+            <Button
+                android:id="@+id/stop"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimaryDark"
+                android:textColor="@color/text_color"
+                android:textStyle="bold"
+                android:layout_margin="5dp"
+                android:onClick="stopTimer"
+                android:layout_weight="1"
+                android:text="Cancel" />
+            <TextView
+                android:id="@+id/dist"
+                android:padding="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_color"
+                android:text="0" />
+
+            <TextView
+                android:id="@+id/timer"
+                android:padding="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_color"
+                android:text="timer" />
+        </LinearLayout>
+
+
 
     </LinearLayout>
 

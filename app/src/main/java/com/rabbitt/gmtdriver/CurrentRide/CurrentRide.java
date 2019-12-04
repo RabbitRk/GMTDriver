@@ -8,13 +8,15 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.rabbitt.gmtdriver.Adapter.CurrentRideAdapter;
+import com.google.android.material.tabs.TabLayout;
 import com.rabbitt.gmtdriver.Adapter.RecycleAdapter;
 import com.rabbitt.gmtdriver.DBHelper.dbHelper;
 import com.rabbitt.gmtdriver.DBHelper.recycleAdapter;
@@ -24,7 +26,7 @@ import com.ramotion.foldingcell.FoldingCell;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CurrentRide extends Fragment implements CurrentRideAdapter.OnRecycleItemListener {
+public class CurrentRide extends Fragment{
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -37,7 +39,6 @@ public class CurrentRide extends Fragment implements CurrentRideAdapter.OnRecycl
 
     List<RecycleAdapter> rideAdapter = new ArrayList<>();
     RecycleAdapter model = null;
-    CurrentRideAdapter recycleadapter;
     RecyclerView recyclerView;
     dbHelper database;
 
@@ -68,28 +69,45 @@ public class CurrentRide extends Fragment implements CurrentRideAdapter.OnRecycl
 
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_current_ride, container, false);
-        recyclerView = view.findViewById(R.id.c_recycler);
-        rideAdapter = new ArrayList<>();
 
-        database = new dbHelper(getContext());
+//        recyclerView = view.findViewById(R.id.c_recycler);
+//        rideAdapter = new ArrayList<>();
+
+//        database = new dbHelper(getContext());
 
 //        database.insertdata("1", "11.09.2108", "Cuddalore", "Cuddalore", "1", "CTY","04-12-2019"); 
 
-        rideAdapter = database.getdata();
+//        rideAdapter = database.getdata();
 
-//        final FoldingCell fc = view.findViewById(R.id.folding_cell);
-//
-//
-//        // attach click listener to folding cell
-//        fc.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                fc.toggle(false);
-//            }
-//        });
+//        updaterecyclershit(rideAdapter);
 
-        updaterecyclershit(rideAdapter);
+        init(view);
         return view;
+    }
+
+    private void init(final View view) {
+
+        new Handler().postDelayed(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        PagerAdapter adapter = new PagerAdapter(getFragmentManager());
+                        ViewPager viewPager = view.findViewById(R.id.pager);
+                        TabLayout tabLayout = view.findViewById(R.id.tablayout);
+
+                        adapter.AddFragment(new CityFragment(), getParentFragment());
+                        adapter.AddFragment(new RentalFragment(), getParentFragment());
+                        adapter.AddFragment(new OutStationFragment(), getParentFragment());
+
+                        viewPager.setAdapter(adapter);
+                        tabLayout.setupWithViewPager(viewPager);
+
+                        tabLayout.getTabAt(0).setIcon(R.drawable.ic_taxi).setText("City");
+                        tabLayout.getTabAt(1).setIcon(R.drawable.ic_taxi).setText("Rental");
+                        tabLayout.getTabAt(2).setIcon(R.drawable.ic_taxi).setText("Outstation");
+                    }
+                }, 100);
+
     }
 
     public void onButtonPressed(Uri uri) {
@@ -115,33 +133,28 @@ public class CurrentRide extends Fragment implements CurrentRideAdapter.OnRecycl
         mListener = null;
     }
 
-    private void updaterecyclershit(List<RecycleAdapter> datam) {
-
-//        for (int i = 0; i < 5; i++) {
-//            model = new RecycleAdapter();
-//            model.setTitle(String.valueOf(i));
-//            //url to be included
-//            model.setContent(String.valueOf(i));
-//            data.add(model);
+//    private void updaterecyclershit(List<RecycleAdapter> datam) {
+//
+////        for (int i = 0; i < 5; i++) {
+////            model = new RecycleAdapter();
+////            model.setTitle(String.valueOf(i));
+////            //url to be included
+////            model.setContent(String.valueOf(i));
+////            data.add(model);
+////        }
+//        Log.i(TAG, "Current thread:update " + Thread.currentThread().getId());
+//        if (datam != null) {
+//
+//            recycleadapter = new CurrentRideAdapter(datam, this, this);
+//            Log.i("HIteshdata", "" + datam);
+//            LinearLayoutManager reLayoutManager = new LinearLayoutManager(getActivity());
+//            recyclerView.setLayoutManager(reLayoutManager);
+//            reLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+//            recyclerView.setItemAnimator(new DefaultItemAnimator());
+//            recyclerView.setAdapter(recycleadapter);
+//            recycleadapter.notifyDataSetChanged();
 //        }
-        Log.i(TAG, "Current thread:update " + Thread.currentThread().getId());
-        if (datam != null) {
-
-            recycleadapter = new CurrentRideAdapter(datam, this, this);
-            Log.i("HIteshdata", "" + datam);
-            LinearLayoutManager reLayoutManager = new LinearLayoutManager(getActivity());
-            recyclerView.setLayoutManager(reLayoutManager);
-            reLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-            recyclerView.setItemAnimator(new DefaultItemAnimator());
-            recyclerView.setAdapter(recycleadapter);
-            recycleadapter.notifyDataSetChanged();
-        }
-    }
-
-    @Override
-    public void OnItemClick(int position) {
-        Log.i(TAG, "OnItemClick: "+position);
-    }
+//    }
 
 
     public interface OnFragmentInteractionListener {

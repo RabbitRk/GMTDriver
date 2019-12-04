@@ -15,7 +15,7 @@
                     android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="220dp"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     android:background="@color/bgcolor">
 
                     <LinearLayout

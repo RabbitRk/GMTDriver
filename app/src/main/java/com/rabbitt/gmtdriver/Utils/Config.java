@@ -12,7 +12,7 @@ public class Config {
         public static final String RATE_CALCULATION = "http://192.168.43.231:80/GotMyTrip/rateCalculator";
 
         public static final String SHARED_PREF = "TOKEN_PREFS";
-        public static final String USER_PREFS = "USER_DETAILS";
+        public static final String GET_CITYRIDE = "http://192.168.43.231:80/GotMyTrip/getCityRide";
 
 //        static final String DISTANCE_CALC = "http://192.168.43.252:80/GotMyTrip/distanceCalculatoral";
 //        static final String CUSTOMER_CITY_BOOK = "http://192.168.43.252:80/GotMyTrip/cityBooking";

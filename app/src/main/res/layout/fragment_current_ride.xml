@@ -7,6 +7,7 @@
     android:orientation="vertical"
     tools:context=".CurrentRide.CurrentRide">
 
+    <!--ToolBar-->
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/tool"
         android:layout_width="match_parent"
@@ -19,20 +20,26 @@
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimaryDark"
             app:popupTheme="@style/Login_page.PopupOverlay"
-            app:title="Available Rides" />
+            app:title="GMT Cabs" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/swipeme"
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tablayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:tabIndicatorColor="@color/colorAccent">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/c_recycler"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+    </com.google.android.material.tabs.TabLayout>
 
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/pager"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent">
+
+    </androidx.viewpager.widget.ViewPager>
 
 </LinearLayout>

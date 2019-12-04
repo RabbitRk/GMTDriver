@@ -13,7 +13,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.widget.TextView;
 
-import com.rabbitt.gmtdriver.Odometer.odometer;
+import com.rabbitt.gmtdriver.Odometer.OdometerService;
 
 public class TrackRide extends AppCompatActivity {
 
@@ -21,7 +21,7 @@ public class TrackRide extends AppCompatActivity {
     private double distanceTraveledValue;
 
     //track distance code starts here
-    odometer odo;
+    OdometerService odo;
     boolean bound;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +29,7 @@ public class TrackRide extends AppCompatActivity {
         setContentView(R.layout.activity_track_ride);
 
         txt = findViewById(R.id.text);
-        Intent intento = new Intent(this, odometer.class);
+        Intent intento = new Intent(this, OdometerService.class);
         bindService(intento, connection, Context.BIND_AUTO_CREATE);
 
         displayDistance();
@@ -38,7 +38,7 @@ public class TrackRide extends AppCompatActivity {
     private ServiceConnection connection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder binder) {
-            odometer.OdometerBinder odometerBinder = (odometer.OdometerBinder) binder;
+            OdometerService.OdomterBinder odometerBinder = (OdometerService.OdomterBinder) binder;
             odo = odometerBinder.getOdometer();
             bound = true;
         }

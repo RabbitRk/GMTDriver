@@ -17,7 +17,7 @@ public class prefsManager {
     private static final String LOGIN = "IsFirstTimeLaunch";
 
     //user details
-    private static final String USER_PREFS = "USER_DETAILS";
+    public static final String USER_PREFS = "USER_DETAILS";
     private static final String ID_KEY = "ID_KEY";
     private static final String TYPE = "USER_KEY";
     private static final String USER_PHONE = "USER_PHONE";

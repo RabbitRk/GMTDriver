@@ -1,14 +1,6 @@
 package com.rabbitt.gmtdriver.MapActivity;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.FragmentActivity;
-
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -19,15 +11,12 @@ import android.content.IntentSender;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.location.Address;
-import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
-import android.os.Looper;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.util.Log;
@@ -39,6 +28,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentActivity;
+
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -48,7 +44,6 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
-import com.google.android.gms.common.internal.Constants;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
@@ -87,11 +82,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
-import java.util.Timer;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
+public class GetRideMapActivity extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         LocationListener {
 
@@ -131,12 +124,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private final int PERMISSION_REQUEST_CODE = 698;
 
     //timer
-//    private Button btn_start, btn_cancel;
+    private Button btn_start, btn_cancel;
     private TextView tv_timer;
     String date_time;
     Calendar calendar;
     SimpleDateFormat simpleDateFormat;
-//    EditText et_hours;
+    EditText et_hours;
 
     SharedPreferences mpref;
     SharedPreferences.Editor mEditor;
@@ -213,20 +206,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         try {
             String str_value = mpref.getString("data", "");
             if (str_value.matches("")) {
-//                et_hours.setEnabled(true);
-//                btn_start.setEnabled(true);
+                et_hours.setEnabled(true);
+                btn_start.setEnabled(true);
                 tv_timer.setText("");
 
             } else {
 
                 if (mpref.getBoolean("finish", false)) {
-//                    et_hours.setEnabled(true);
-//                    btn_start.setEnabled(true);
+                    et_hours.setEnabled(true);
+                    btn_start.setEnabled(true);
                     tv_timer.setText("");
                 } else {
 
-//                    et_hours.setEnabled(false);
-//                    btn_start.setEnabled(false);
+                    et_hours.setEnabled(false);
+                    btn_start.setEnabled(false);
                     tv_timer.setText(str_value);
                 }
             }
@@ -427,7 +420,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             try {
                                 // Show the dialog by calling startResolutionForResult(),
                                 // and check the result in onActivityResult().
-                                status.startResolutionForResult(MapsActivity.this, REQUEST_LOCATION);
+                                status.startResolutionForResult(GetRideMapActivity.this, REQUEST_LOCATION);
                             } catch (IntentSender.SendIntentException e) {
                                 // Ignore the error.
                             }
@@ -977,7 +970,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     double lat = Double.parseDouble(point.get("lat"));
                     double lng = Double.parseDouble(point.get("lng"));
 
-                    Toast.makeText(MapsActivity.this, "latitude " + lat + "....longitude " + lng, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(GetRideMapActivity.this, "latitude " + lat + "....longitude " + lng, Toast.LENGTH_SHORT).show();
 //RkDk
                     LatLng position = new LatLng(lat, lng);
 

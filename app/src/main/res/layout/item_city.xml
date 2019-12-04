@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="5dp">
+
+    <com.ramotion.foldingcell.FoldingCell
+        android:id="@+id/folding_cell"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/cell_content_view"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:background="@color/bgcolor">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:text="Book ID:"
+                    android:textColor="@color/colorAccent" />
+
+                <TextView
+                    android:id="@+id/book_id__"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="title"
+                    android:textColor="@color/text_color" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:text="Prefix:"
+                    android:textColor="@color/colorAccent" />
+
+                <TextView
+                    android:id="@+id/prefix__"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="prefix"
+                    android:textColor="@color/text_color" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:text="Pickup time:"
+                    android:textColor="@color/colorAccent" />
+
+                <TextView
+                    android:id="@+id/timeat__"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="prefix"
+                    android:textColor="@color/text_color" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:text="Pick up:"
+                    android:textColor="@color/colorAccent" />
+
+                <TextView
+                    android:id="@+id/origin__"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:padding="10dp"
+                    android:text="origin"
+                    android:textColor="@color/text_color" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:text="Drop at:"
+                    android:textColor="@color/colorAccent" />
+
+                <TextView
+                    android:id="@+id/dest_"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:padding="10dp"
+                    android:text="dest"
+                    android:textColor="@color/text_color" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:text="Distance:"
+                    android:textColor="@color/colorAccent" />
+
+                <TextView
+                    android:id="@+id/distance__"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:padding="10dp"
+                    android:text="dest"
+                    android:textColor="@color/text_color" />
+
+            </LinearLayout>
+
+<!--            <LinearLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content">-->
+
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:padding="10dp"-->
+<!--                    android:text="Return Date:"-->
+<!--                    android:textColor="@color/colorAccent" />-->
+
+<!--                <TextView-->
+<!--                    android:id="@+id/returnd_"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:ellipsize="end"-->
+<!--                    android:maxLines="1"-->
+<!--                    android:padding="10dp"-->
+<!--                    android:text="dest"-->
+<!--                    android:textColor="@color/text_color" />-->
+
+<!--            </LinearLayout>-->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/cancel_"
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="gotoNavigation"
+                    android:layout_gravity="center"
+                    android:background="@color/tranfer_color"
+                    android:fontFamily="sans-serif"
+                    android:layout_marginStart="10dp"
+                    android:textColor="@color/text_color"
+                    style="@android:style/ButtonBar"
+                    android:textStyle="bold"
+                    android:text="Cancel" />
+
+                <Button
+                    android:id="@+id/ridenow_"
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="gotoNavigation"
+                    android:layout_gravity="center"
+                    android:background="@color/colorPrimaryDark"
+                    android:fontFamily="sans-serif"
+                    android:layout_margin="10dp"
+                    android:textColor="@color/text_color"
+                    style="@android:style/ButtonBar"
+                    android:textStyle="bold"
+                    android:text="Ride Now" />
+
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/cell_title_view"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:background="@color/tranfer_color"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:text="Book ID:"
+                    android:textColor="@color/colorAccent" />
+
+                <TextView
+                    android:id="@+id/book_id_"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="title"
+                    android:textColor="@color/text_color" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:text="Prefix:"
+                    android:textColor="@color/colorAccent" />
+
+                <TextView
+                    android:id="@+id/prefix_"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="prefix"
+                    android:textColor="@color/text_color" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:text="Pickup time:"
+                    android:textColor="@color/colorAccent" />
+
+                <TextView
+                    android:id="@+id/timeat_"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="prefix"
+                    android:textColor="@color/text_color" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:text="Pick up:"
+                    android:textColor="@color/colorAccent" />
+
+                <TextView
+                    android:id="@+id/origin_"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:padding="10dp"
+                    android:text="origin"
+                    android:textColor="@color/text_color" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!--        </FrameLayout>-->
+
+    </com.ramotion.foldingcell.FoldingCell>
+
+</LinearLayout>

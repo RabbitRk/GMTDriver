@@ -2,16 +2,21 @@ package com.rabbitt.gmtdriver.Adapter;
 
 public class RecycleAdapter {
     private String book_id, origin, destin, v_type, t_type;
-//    private String title, content;
-
     public String timeat;
     public String travel_type;
-//    public String book_id;
-//    public String origin, destination;
-//    public String v_type;
     public String package_id;
     public String prefix;
     public String returnD;
+
+    public String Distance;
+
+    public String getDistance() {
+        return Distance;
+    }
+
+    public void setDistance(String distance) {
+        Distance = distance;
+    }
 
     public String getTimeat() {
         return timeat;

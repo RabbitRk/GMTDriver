@@ -54,6 +54,7 @@
         </activity>
         <activity android:name=".LoginActivity" />
         <activity android:name=".MainActivity" />
+        <activity android:name=".MapActivity.GetRideMapActivity" />
 
         <service
             android:name=".Firebase.FirebaseMessengingService"
@@ -63,7 +64,23 @@
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
-        <service android:name=".Odometer.odometer" />
+
+        <service android:name=".Odometer.OdometerService"
+            tools:ignore="InnerclassSeparator" />
+
+        <service android:name=".MapActivity.TimerService"
+            tools:ignore="InnerclassSeparator" />
+
+        <receiver
+            android:name=".InternetBroadcast"
+            tools:ignore="InnerclassSeparator">
+            <intent-filter>
+                <action
+                    android:name="android.net.conn.CONNECTIVITY_CHANGE"
+                    tools:ignore="BatteryLife" />
+            </intent-filter>
+        </receiver>
+
     </application>
 
 </manifest>
