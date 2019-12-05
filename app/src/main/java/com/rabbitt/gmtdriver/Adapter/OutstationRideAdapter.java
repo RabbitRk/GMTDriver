@@ -9,20 +9,20 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.rabbitt.gmtdriver.CurrentRide.CityFragment;
+import com.rabbitt.gmtdriver.CurrentRide.OutStationFragment;
 import com.rabbitt.gmtdriver.R;
 import com.ramotion.foldingcell.FoldingCell;
 
 import java.util.List;
 
-public class CityRideAdapter extends RecyclerView.Adapter<CityRideAdapter.holder> {
+public class OutstationRideAdapter extends RecyclerView.Adapter<OutstationRideAdapter.holder> {
 
     private static final String TAG = "CurrentRideAdapter";
     private List<RecycleAdapter> dataModelArrayList;
-    private CityFragment context;
+    private OutStationFragment context;
     private OnRecycleItemListener mOnRecycleItemListener;
 
-    public          CityRideAdapter(List<RecycleAdapter> productAdapter, CityFragment context, OnRecycleItemListener onRecycleItemListener)
+    public OutstationRideAdapter(List<RecycleAdapter> productAdapter, OutStationFragment context, OnRecycleItemListener onRecycleItemListener)
     {
         this.dataModelArrayList = productAdapter;
         this.context = context;
@@ -32,23 +32,23 @@ public class CityRideAdapter extends RecyclerView.Adapter<CityRideAdapter.holder
 
     @NonNull
     @Override
-    public CityRideAdapter.holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_city, parent,false);
+    public OutstationRideAdapter.holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_outstation, parent,false);
         return new holder(view, mOnRecycleItemListener);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CityRideAdapter.holder holder, int i) {
+    public void onBindViewHolder(@NonNull OutstationRideAdapter.holder holder, int i) {
         RecycleAdapter dataModel = dataModelArrayList.get(i);
 
         Log.i(TAG, "onBindViewHolder: "+dataModel.getBook_id()+"  -  "+dataModelArrayList.get(i));
         holder.book_id_t.setText(dataModel.getBook_id());
-//        holder.prefix_t.setText(dataModel.getPrefix());
+        holder.prefix_t.setText(dataModel.getPrefix());
         holder.origin_t.setText(dataModel.getOrigin());
         holder.pick_time_t.setText(dataModel.getTimeat());
 
         holder.book_id_c.setText(dataModel.getBook_id());
-//        holder.prefix_c.setText(dataModel.getPrefix());
+        holder.prefix_c.setText(dataModel.getPrefix());
         holder.origin_c.setText(dataModel.getOrigin());
         holder.destin_c.setText(dataModel.getDestin());
         holder.pick_time_c.setText(dataModel.getTimeat());
@@ -71,12 +71,12 @@ public class CityRideAdapter extends RecyclerView.Adapter<CityRideAdapter.holder
             this.onRecycleItemListener = onRecycleItemListener;
 
             book_id_t = itemView.findViewById(R.id.book_id_);
-//            prefix_t = itemView.findViewById(R.id.prefix_);
+            prefix_t = itemView.findViewById(R.id.prefix_);
             origin_t = itemView.findViewById(R.id.origin_);
             pick_time_t = itemView.findViewById(R.id.timeat_);
 
             book_id_c = itemView.findViewById(R.id.book_id__);
-//            prefix_c = itemView.findViewById(R.id.prefix__);
+            prefix_c = itemView.findViewById(R.id.prefix__);
             origin_c = itemView.findViewById(R.id.origin__);
             pick_time_c = itemView.findViewById(R.id.timeat__);
             destin_c = itemView.findViewById(R.id.dest_);

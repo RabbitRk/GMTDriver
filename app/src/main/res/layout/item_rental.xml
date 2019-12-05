@@ -15,7 +15,7 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="visible"
+            android:visibility="gone"
             android:background="@color/bgcolor">
 
             <LinearLayout
@@ -42,20 +42,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="10dp"
-                    android:text="Prefix:"
-                    android:textColor="@color/colorAccent" />
-
-                <TextView
-                    android:id="@+id/prefix__"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="prefix"
-                    android:textColor="@color/text_color" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="10dp"
                     android:text="Pickup time:"
                     android:textColor="@color/colorAccent" />
 
@@ -63,7 +49,7 @@
                     android:id="@+id/timeat__"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="prefix"
+                    android:text="0000-00-00 00:00"
                     android:textColor="@color/text_color" />
             </LinearLayout>
 
@@ -98,34 +84,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="10dp"
-                    android:text="Drop at:"
+                    android:text="Package:"
                     android:textColor="@color/colorAccent" />
 
                 <TextView
-                    android:id="@+id/dest_"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ellipsize="end"
-                    android:maxLines="1"
-                    android:padding="10dp"
-                    android:text="dest"
-                    android:textColor="@color/text_color" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    android:text="Distance:"
-                    android:textColor="@color/colorAccent" />
-
-                <TextView
-                    android:id="@+id/distance__"
+                    android:id="@+id/package_"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
@@ -144,11 +107,11 @@
 <!--                    android:layout_width="wrap_content"-->
 <!--                    android:layout_height="wrap_content"-->
 <!--                    android:padding="10dp"-->
-<!--                    android:text="Return Date:"-->
+<!--                    android:text="Base Fare:"-->
 <!--                    android:textColor="@color/colorAccent" />-->
 
 <!--                <TextView-->
-<!--                    android:id="@+id/returnd_"-->
+<!--                    android:id="@+id/base_fare_"-->
 <!--                    android:layout_width="match_parent"-->
 <!--                    android:layout_height="wrap_content"-->
 <!--                    android:ellipsize="end"-->
@@ -158,6 +121,29 @@
 <!--                    android:textColor="@color/text_color" />-->
 
 <!--            </LinearLayout>-->
+
+            <!--            <LinearLayout-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content">-->
+
+            <!--                <TextView-->
+            <!--                    android:layout_width="wrap_content"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:padding="10dp"-->
+            <!--                    android:text="Return Date:"-->
+            <!--                    android:textColor="@color/colorAccent" />-->
+
+            <!--                <TextView-->
+            <!--                    android:id="@+id/returnd_"-->
+            <!--                    android:layout_width="match_parent"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:ellipsize="end"-->
+            <!--                    android:maxLines="1"-->
+            <!--                    android:padding="10dp"-->
+            <!--                    android:text="dest"-->
+            <!--                    android:textColor="@color/text_color" />-->
+
+            <!--            </LinearLayout>-->
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -226,6 +212,19 @@
                     android:text="title"
                     android:textColor="@color/text_color" />
 
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:padding="10dp"-->
+<!--                    android:text="Prefix:"-->
+<!--                    android:textColor="@color/colorAccent" />-->
+
+<!--                <TextView-->
+<!--                    android:id="@+id/prefix_"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="prefix"-->
+<!--                    android:textColor="@color/text_color" />-->
 
                 <TextView
                     android:layout_width="wrap_content"

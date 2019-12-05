@@ -178,8 +178,6 @@ public class CityFragment extends Fragment implements CityRideAdapter.OnRecycleI
 
         //Adding request the the queue
         VolleySingleton.getInstance(getActivity()).addToRequestQueue(stringRequest);
-
-
     }
 
 //    private void onDataLoaded() {
