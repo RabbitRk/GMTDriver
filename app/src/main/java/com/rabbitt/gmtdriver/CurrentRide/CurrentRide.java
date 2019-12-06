@@ -1,33 +1,60 @@
 package com.rabbitt.gmtdriver.CurrentRide;
 
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
+import android.widget.Switch;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.google.android.material.tabs.TabLayout;
 import com.rabbitt.gmtdriver.Adapter.RecycleAdapter;
 import com.rabbitt.gmtdriver.DBHelper.dbHelper;
-import com.rabbitt.gmtdriver.DBHelper.recycleAdapter;
+import com.rabbitt.gmtdriver.Preferences.prefsManager;
 import com.rabbitt.gmtdriver.R;
-import com.ramotion.foldingcell.FoldingCell;
+import com.rabbitt.gmtdriver.Utils.Config;
+import com.rabbitt.gmtdriver.VolleySingleton;
+
+import org.jetbrains.annotations.NotNull;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
-public class CurrentRide extends Fragment{
+import static android.content.Context.MODE_PRIVATE;
+import static com.rabbitt.gmtdriver.Preferences.prefsManager.ID_KEY;
+import static com.rabbitt.gmtdriver.Preferences.prefsManager.LOG_STATUS;
+import static com.rabbitt.gmtdriver.Preferences.prefsManager.USER_PREFS;
+import static com.rabbitt.gmtdriver.SplashScreen.LOG_TAG;
 
+public class CurrentRide extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private static final String TAG = "CurrentRide";
@@ -41,6 +68,8 @@ public class CurrentRide extends Fragment{
     RecycleAdapter model = null;
     RecyclerView recyclerView;
     dbHelper database;
+    String driver_id;
+    prefsManager prefsManager;
 
     public CurrentRide() {
         // Required empty public constructor
@@ -62,6 +91,12 @@ public class CurrentRide extends Fragment{
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+        SharedPreferences shrp = Objects.requireNonNull(getActivity()).getSharedPreferences(USER_PREFS,Context.MODE_PRIVATE);
+        driver_id = shrp.getString(ID_KEY, "");
+
+        prefsManager = new prefsManager(Objects.requireNonNull(getContext()));
+
     }
 
     @Override
@@ -80,12 +115,61 @@ public class CurrentRide extends Fragment{
 //        rideAdapter = database.getdata();
 
 //        updaterecyclershit(rideAdapter);
-
         init(view);
         return view;
     }
 
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+//        inflater.inflate(R.menu.tool_switch, menu);
+//        super.onCreateOptionsMenu(menu, inflater);
+
+        inflater.inflate(R.menu.tool_switch, menu);
+
+        MenuItem item = menu.findItem(R.id.login_menu);
+        item.setActionView(R.layout.switch_btn);
+
+        //getting shared prefs for login or logout
+        SharedPreferences shrp = getContext().getSharedPreferences("USER_DETAILS",MODE_PRIVATE);
+        String val = shrp.getString(LOG_STATUS,"");
+        Log.i(TAG, "RkBtn: "+val);
+
+        Switch mySwitch = item.getActionView().findViewById(R.id.switchForActionBar);
+
+        if (val.equals("1"))
+            mySwitch.setChecked(true);
+        else
+            mySwitch.setChecked(false);
+
+        mySwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                // do something based on isChecked
+                if (isChecked)
+                {
+                    Log.i(TAG, "onCheckedChanged:if "+isChecked);
+                    prefsManager.status("1");
+                    setDriverStatus("1");
+                }
+                else
+                {
+                    Log.i(TAG, "onCheckedChanged:else "+isChecked);
+                    prefsManager.status("0");
+                    setDriverStatus("0");
+                }
+            }
+        });
+
+    }
+
+
     private void init(final View view) {
+
+        Toolbar toolbar = view.findViewById(R.id.toolbar);
+
+        // Setting toolbar as the ActionBar with setSupportActionBar() call
+        ((AppCompatActivity) Objects.requireNonNull(getActivity())).setSupportActionBar(toolbar);
+        setHasOptionsMenu(true);
 
         new Handler().postDelayed(
                 new Runnable() {
@@ -102,59 +186,81 @@ public class CurrentRide extends Fragment{
                         viewPager.setAdapter(adapter);
                         tabLayout.setupWithViewPager(viewPager);
 
-                        tabLayout.getTabAt(0).setIcon(R.drawable.ic_taxi).setText("City");
-                        tabLayout.getTabAt(1).setIcon(R.drawable.ic_taxi).setText("Rental");
-                        tabLayout.getTabAt(2).setIcon(R.drawable.ic_taxi).setText("Outstation");
+                        tabLayout.getTabAt(0).setText("City");       //setIcon(R.drawable.ic_taxi)
+                        tabLayout.getTabAt(1).setText("Rental");     //setIcon(R.drawable.ic_taxi)
+                        tabLayout.getTabAt(2).setText("Outstation"); //setIcon(R.drawable.ic_taxi)
                     }
                 }, 100);
 
     }
 
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
+
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NotNull Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
+//        if (context instanceof OnFragmentInteractionListener) {
+//            mListener = (OnFragmentInteractionListener) context;
+//        } else {
+//            throw new RuntimeException(context.toString()
+//                    + " must implement OnFragmentInteractionListener");
+//        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
+//        mListener = null;
     }
 
-//    private void updaterecyclershit(List<RecycleAdapter> datam) {
-//
-////        for (int i = 0; i < 5; i++) {
-////            model = new RecycleAdapter();
-////            model.setTitle(String.valueOf(i));
-////            //url to be included
-////            model.setContent(String.valueOf(i));
-////            data.add(model);
-////        }
-//        Log.i(TAG, "Current thread:update " + Thread.currentThread().getId());
-//        if (datam != null) {
-//
-//            recycleadapter = new CurrentRideAdapter(datam, this, this);
-//            Log.i("HIteshdata", "" + datam);
-//            LinearLayoutManager reLayoutManager = new LinearLayoutManager(getActivity());
-//            recyclerView.setLayoutManager(reLayoutManager);
-//            reLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-//            recyclerView.setItemAnimator(new DefaultItemAnimator());
-//            recyclerView.setAdapter(recycleadapter);
-//            recycleadapter.notifyDataSetChanged();
-//        }
-//    }
+
+    private void setDriverStatus(final String s) {
+        Log.i(TAG, "run:   " + Thread.currentThread().getId());
+
+        //progressdialog until the data retrieved
+        final ProgressDialog loading = ProgressDialog.show(getActivity(), "Updating your status", "Please wait...", false, false);
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Config.STATUS_UPDATE,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        //cancel the progress dialog
+                        loading.dismiss();
+                        if (response.equals("success"))
+                        {
+                            if (s.equals("1"))
+                            {
+                                Toast.makeText(getActivity(), "Logged in", Toast.LENGTH_SHORT).show();
+                            }else{
+                                Toast.makeText(getActivity(), "Logged out", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                        else {
+                            Toast.makeText(getActivity(), "Can't update your request", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        loading.dismiss();
+                        Log.i(LOG_TAG, "volley error.............................." + error.getMessage());
+                        Toast.makeText(getActivity(), "Server is not responding", Toast.LENGTH_LONG).show();
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                //Adding the parameters to the request
+                params.put("DRI_ID", driver_id);
+                params.put("STATUS", s);
+                return params;
+            }
+        };
+
+        //Adding request the the queue
+        VolleySingleton.getInstance(getActivity()).addToRequestQueue(stringRequest);
+    }
 
 
     public interface OnFragmentInteractionListener {

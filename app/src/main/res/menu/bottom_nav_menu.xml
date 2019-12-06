@@ -5,16 +5,16 @@
     <item
         android:id="@+id/navigation_home"
         android:icon="@drawable/ic_home_black_24dp"
-        android:title="Home" />
+        android:title="Available Rides" />
 
     <item
         android:id="@+id/navigation_service"
         android:icon="@drawable/ic_home_black_24dp"
-        android:title="Home" />
+        android:title="Finished Rides" />
 
     <item
         android:id="@+id/navigation_product"
         android:icon="@drawable/ic_home_black_24dp"
-        android:title="Home" />
+        android:title="Earnings" />
 
 </menu>

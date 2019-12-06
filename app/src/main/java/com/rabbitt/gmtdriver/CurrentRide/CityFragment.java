@@ -39,6 +39,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import static com.rabbitt.gmtdriver.Preferences.prefsManager.ID_KEY;
 import static com.rabbitt.gmtdriver.Preferences.prefsManager.USER_PREFS;
 import static com.rabbitt.gmtdriver.SplashScreen.LOG_TAG;
 
@@ -78,7 +79,7 @@ public class CityFragment extends Fragment implements CityRideAdapter.OnRecycleI
 //        }
 
         SharedPreferences shrp = Objects.requireNonNull(getActivity()).getSharedPreferences(USER_PREFS,Context.MODE_PRIVATE);
-        driver_id = shrp.getString("","");
+        driver_id = shrp.getString(ID_KEY,"");
 
 
     }

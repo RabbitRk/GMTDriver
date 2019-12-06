@@ -13,16 +13,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/Login_page.AppBarOverlay">
-
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimaryDark"
             app:popupTheme="@style/Login_page.PopupOverlay"
-            app:title="GMT Cabs" />
-
+            app:title="GMT Cabs">
+        </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
+
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tablayout"
@@ -38,7 +38,7 @@
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/pager"
         android:layout_width="match_parent"
-        android:layout_height="fill_parent">
+        android:layout_height="match_parent">
 
     </androidx.viewpager.widget.ViewPager>
 

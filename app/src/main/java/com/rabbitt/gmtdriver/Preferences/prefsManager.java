@@ -18,13 +18,13 @@ public class prefsManager {
 
     //user details
     public static final String USER_PREFS = "USER_DETAILS";
-    private static final String ID_KEY = "ID_KEY";
+    public static final String ID_KEY = "ID_KEY";
     private static final String TYPE = "USER_KEY";
     private static final String USER_PHONE = "USER_PHONE";
     private static final String USER_EMAIL = "USER_EMAIL";
     private static final String USER_NAME = "USER_NAME";
 
-    private static final String LOG_STATUS = "LOG_STATUS";
+    public static final String LOG_STATUS = "LOG_STATUS";
 
     @SuppressLint("CommitPrefEdits")
     public prefsManager(Context context) {

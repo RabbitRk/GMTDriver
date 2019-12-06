@@ -116,7 +116,7 @@ public class RentalFragment extends Fragment implements RentalRideAdapter.OnRecy
     }
 
     private void init(View view) {
-        recyclerView = view.findViewById(R.id.cityRecycler);
+        recyclerView = view.findViewById(R.id.rentalRecycler);
 //        productAdapter = new ArrayList<>();
         // or apply a new SkeletonLayout to a RecyclerView (showing 5 items)
 //        skeleton = SkeletonLayoutUtils.applySkeleton(recyclerView, R.layout.item_city, 8);
