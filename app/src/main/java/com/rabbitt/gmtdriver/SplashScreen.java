@@ -11,7 +11,7 @@ import com.rabbitt.gmtdriver.Preferences.prefsManager;
 
 public class SplashScreen extends AppCompatActivity {
 
-    public static final String LOG_TAG = "splash";
+    public static final String LOG_TAG = "MainRk";
 
     private Handler splash = new Handler();
 

@@ -2,6 +2,7 @@ package com.rabbitt.gmtdriver.CurrentRide;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
@@ -25,6 +26,7 @@ import com.faltenreich.skeletonlayout.Skeleton;
 import com.faltenreich.skeletonlayout.SkeletonLayoutUtils;
 import com.rabbitt.gmtdriver.Adapter.CityRideAdapter;
 import com.rabbitt.gmtdriver.Adapter.RecycleAdapter;
+import com.rabbitt.gmtdriver.MapActivity.GetRideMapActivity;
 import com.rabbitt.gmtdriver.R;
 import com.rabbitt.gmtdriver.Utils.Config;
 import com.rabbitt.gmtdriver.VolleySingleton;
@@ -164,7 +166,7 @@ public class CityFragment extends Fragment implements CityRideAdapter.OnRecycleI
                     public void onErrorResponse(VolleyError error) {
                         loading.dismiss();
                         Log.i(LOG_TAG, "volley error.............................." + error.getMessage());
-                        Toast.makeText(getActivity(), "Server is not responding", Toast.LENGTH_LONG).show();
+//                        Toast.makeText(getActivity(), "No ride available", Toast.LENGTH_LONG).show();
                     }
                 }) {
             @Override
@@ -221,7 +223,17 @@ public class CityFragment extends Fragment implements CityRideAdapter.OnRecycleI
 
     @Override
     public void OnItemClick(int position) {
-        Toast.makeText(getActivity(), "posi..."+position, Toast.LENGTH_SHORT).show();
+
+        RecycleAdapter model = data.get(position);
+        String book_id = model.getBook_id();
+        String type = model.getPrefix();
+        Intent mapIntent = new Intent(getActivity(), GetRideMapActivity.class);
+        mapIntent.putExtra("book_id",book_id);
+        mapIntent.putExtra("type",type);
+        startActivity(mapIntent);
+
+        Log.i(TAG, "pos " + book_id);
+//        Toast.makeText(getActivity(), "posi..."+position, Toast.LENGTH_SHORT).show();
     }
 
 //    @Override

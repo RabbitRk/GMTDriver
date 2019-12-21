@@ -184,8 +184,8 @@ public class RentalFragment extends Fragment implements RentalRideAdapter.OnRecy
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         loading.dismiss();
-                        Log.i(LOG_TAG, "volley error.............................." + error.getMessage());
-                        Toast.makeText(getActivity(), "Server is not responding", Toast.LENGTH_LONG).show();
+                        Log.i(LOG_TAG, "volley rental.............................." + error.getMessage());
+//                        Toast.makeText(getActivity(), "Server is not responding", Toast.LENGTH_LONG).show();
                     }
                 }) {
             @Override

@@ -13,6 +13,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.rabbitt.gmtdriver.DBHelper.dbHelper;
@@ -34,7 +35,7 @@ import static com.rabbitt.gmtdriver.Firebase.FirebaseMessengingService.NOTIFY_SH
 public class RideAlert extends AppCompatActivity {
     private static final String TAG = "RideAlert";
     //Global declaration
-    dbHelper dbHelpar;
+//    dbHelper dbHelpar;
     Ringtone ringtone;
     SharedPreferences shrp;
 
@@ -52,6 +53,8 @@ public class RideAlert extends AppCompatActivity {
     Toolbar toolbar;
 
     TextView book_idTxt, typeTxt, vehicleTxt, package_idTxt, pickupTxt, dropTxt, timeTxt;
+    RelativeLayout drop_layout, package_layout;
+    View drop_line, package_line;
 
     public static final String oriLata = "orilat", oriLnga = "orilng";
     public static final String desLata = "deslat", desLnga = "deslng";
@@ -72,7 +75,7 @@ public class RideAlert extends AppCompatActivity {
     }
 
     private void init() {
-        dbHelpar =  new dbHelper(this);
+//        dbHelpar =  new dbHelper(this);
 
         toolbar.setTitle("Ride");
 
@@ -84,6 +87,12 @@ public class RideAlert extends AppCompatActivity {
         pickupTxt = findViewById(R.id.pickup);
         dropTxt = findViewById(R.id.drop);
         timeTxt = findViewById(R.id.timeat);
+
+        //view initialization
+        drop_layout = findViewById(R.id.drop_area);
+        drop_line = findViewById(R.id.drop_line);
+        package_layout = findViewById(R.id.package_area);
+        package_line = findViewById(R.id.package_line);
 
         //getting values from the sharedprefs
         shrp = getSharedPreferences(NOTIFY_SHARED_PREFS, MODE_PRIVATE);
@@ -109,11 +118,17 @@ public class RideAlert extends AppCompatActivity {
         package_idTxt.setText(package_type);
 
         //visiblity controller
-        if (type.equals("rental")) {
-            dropTxt.setVisibility(View.GONE);
-        }
-        else {
-            package_idTxt.setVisibility(View.GONE);
+        switch (type)
+        {
+            case "rental":
+                drop_layout.setVisibility(View.GONE);
+                drop_line.setVisibility(View.GONE);
+                break;
+            case "city":
+            case "outstation":
+                package_layout.setVisibility(View.GONE);
+                package_line.setVisibility(View.GONE);
+                break;
         }
 
         Log.i(TAG, book_id+" "+type+" "+vehicle+" "+pickup+" "+drop+" "+time);
@@ -126,14 +141,12 @@ public class RideAlert extends AppCompatActivity {
 
         ringtone = RingtoneManager.getRingtone(this, alarmUri);
         ringtone.play();
-
     }
 
     public void gotoNavigation(View view) {
         ringtone.stop();
-//        dbHelpar.insertdata(book_id, time, type, vehicle, pickup, drop, package_type);
 
-        //close the notification jon the notificaiton bar
+        //close the notification jon the notification bar
         try {
             NotificationManager notificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
             notificationManager.cancelAll();

@@ -52,12 +52,12 @@ import static android.content.Context.MODE_PRIVATE;
 import static com.rabbitt.gmtdriver.Preferences.prefsManager.ID_KEY;
 import static com.rabbitt.gmtdriver.Preferences.prefsManager.LOG_STATUS;
 import static com.rabbitt.gmtdriver.Preferences.prefsManager.USER_PREFS;
-import static com.rabbitt.gmtdriver.SplashScreen.LOG_TAG;
 
 public class CurrentRide extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private static final String TAG = "CurrentRide";
+    private static final String LOG_TAG = "MainRk";
 
     private String mParam1;
     private String mParam2;
@@ -171,26 +171,26 @@ public class CurrentRide extends Fragment {
         ((AppCompatActivity) Objects.requireNonNull(getActivity())).setSupportActionBar(toolbar);
         setHasOptionsMenu(true);
 
-        new Handler().postDelayed(
-                new Runnable() {
-                    @Override
-                    public void run() {
-                        PagerAdapter adapter = new PagerAdapter(getFragmentManager());
-                        ViewPager viewPager = view.findViewById(R.id.pager);
-                        TabLayout tabLayout = view.findViewById(R.id.tablayout);
-
-                        adapter.AddFragment(new CityFragment(), getParentFragment());
-                        adapter.AddFragment(new RentalFragment(), getParentFragment());
-                        adapter.AddFragment(new OutStationFragment(), getParentFragment());
-
-                        viewPager.setAdapter(adapter);
-                        tabLayout.setupWithViewPager(viewPager);
-
-                        tabLayout.getTabAt(0).setText("City");       //setIcon(R.drawable.ic_taxi)
-                        tabLayout.getTabAt(1).setText("Rental");     //setIcon(R.drawable.ic_taxi)
-                        tabLayout.getTabAt(2).setText("Outstation"); //setIcon(R.drawable.ic_taxi)
-                    }
-                }, 100);
+//        new Handler().postDelayed(
+//                new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        PagerAdapter adapter = new PagerAdapter(getFragmentManager());
+//                        ViewPager viewPager = view.findViewById(R.id.pager);
+//                        TabLayout tabLayout = view.findViewById(R.id.tablayout);
+//
+//                        adapter.AddFragment(new CityFragment(), getParentFragment());
+//                        adapter.AddFragment(new RentalFragment(), getParentFragment());
+//                        adapter.AddFragment(new OutStationFragment(), getParentFragment());
+//
+//                        viewPager.setAdapter(adapter);
+//                        tabLayout.setupWithViewPager(viewPager);
+//
+//                        tabLayout.getTabAt(0).setText("City");       //setIcon(R.drawable.ic_taxi)
+//                        tabLayout.getTabAt(1).setText("Rental");     //setIcon(R.drawable.ic_taxi)
+//                        tabLayout.getTabAt(2).setText("Outstation"); //setIcon(R.drawable.ic_taxi)
+//                    }
+//                }, 100);
 
     }
 
@@ -214,7 +214,7 @@ public class CurrentRide extends Fragment {
     }
 
 
-    private void setDriverStatus(final String s) {
+    private void setDriverStatus(final String status) {
         Log.i(TAG, "run:   " + Thread.currentThread().getId());
 
         //progressdialog until the data retrieved
@@ -228,7 +228,7 @@ public class CurrentRide extends Fragment {
                         loading.dismiss();
                         if (response.equals("success"))
                         {
-                            if (s.equals("1"))
+                            if (status.equals("1"))
                             {
                                 Toast.makeText(getActivity(), "Logged in", Toast.LENGTH_SHORT).show();
                             }else{
@@ -253,7 +253,7 @@ public class CurrentRide extends Fragment {
                 Map<String, String> params = new HashMap<>();
                 //Adding the parameters to the request
                 params.put("DRI_ID", driver_id);
-                params.put("STATUS", s);
+                params.put("STATUS", status);
                 return params;
             }
         };

@@ -88,6 +88,7 @@ public class FirebaseMessengingService extends FirebaseMessagingService {
             //setting shared prefs
             sharedPreferences = getSharedPreferences(NOTIFY_SHARED_PREFS, MODE_PRIVATE);
             editor = sharedPreferences.edit();
+
             editor.putString(BOOK_ID, book_id);
             editor.putString(TYPE, type);
             editor.putString(VEHICLE, vehicle);

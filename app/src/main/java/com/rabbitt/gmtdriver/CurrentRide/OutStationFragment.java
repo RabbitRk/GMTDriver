@@ -2,6 +2,7 @@ package com.rabbitt.gmtdriver.CurrentRide;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -35,7 +36,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
+import static com.rabbitt.gmtdriver.Preferences.prefsManager.ID_KEY;
+import static com.rabbitt.gmtdriver.Preferences.prefsManager.USER_PREFS;
 import static com.rabbitt.gmtdriver.SplashScreen.LOG_TAG;
 
 /**
@@ -89,10 +93,12 @@ public class OutStationFragment extends Fragment implements OutstationRideAdapte
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+//        if (getArguments() != null) {
+//            mParam1 = getArguments().getString(ARG_PARAM1);
+//            mParam2 = getArguments().getString(ARG_PARAM2);
+//        }
+        SharedPreferences shrp = Objects.requireNonNull(getActivity()).getSharedPreferences(USER_PREFS,Context.MODE_PRIVATE);
+        driver_id = shrp.getString(ID_KEY,"");
     }
 
     @Override
@@ -175,8 +181,8 @@ public class OutStationFragment extends Fragment implements OutstationRideAdapte
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         loading.dismiss();
-                        Log.i(LOG_TAG, "volley error.............................." + error.getMessage());
-                        Toast.makeText(getActivity(), "Server is not responding", Toast.LENGTH_LONG).show();
+                        Log.i(LOG_TAG, "volley error outstation.............................." + error.getMessage());
+//                        Toast.makeText(getActivity(), "Server is not responding", Toast.LENGTH_LONG).show();
                     }
                 }) {
             @Override

@@ -25,8 +25,8 @@ public class OdometerService extends Service{
     private static Location lastLocation = null;
 
     public OdometerService() {
-    }
 
+    }
 
     public class OdomterBinder extends Binder {
         public OdometerService getOdometer() {

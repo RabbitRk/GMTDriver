@@ -16,16 +16,14 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.TimeUnit;
 
 public class TimerService extends Service {
+
     public static String str_receiver = "com.countdowntimerservice.receiver";
 
     private Handler mHandler = new Handler();
     Calendar calendar;
     SimpleDateFormat simpleDateFormat;
-    String strDate;
-    Date date_current, date_diff;
     SharedPreferences mpref;
     SharedPreferences.Editor mEditor;
 
@@ -119,11 +117,11 @@ public class TimerService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        mTimer.cancel();
         Log.e("Service finish", "Finish");
     }
 
     private void fn_update(String str_time) {
-
         intent.putExtra("time", str_time);
         sendBroadcast(intent);
     }

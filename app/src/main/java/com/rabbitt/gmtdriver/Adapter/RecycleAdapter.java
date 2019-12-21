@@ -81,20 +81,4 @@ public class RecycleAdapter {
     public void setDestin(String destin) {
         this.destin = destin;
     }
-
-    public String getV_type() {
-        return v_type;
-    }
-
-    public void setV_type(String v_type) {
-        this.v_type = v_type;
-    }
-
-    public String getT_type() {
-        return t_type;
-    }
-
-    public void setT_type(String t_type) {
-        this.t_type = t_type;
-    }
 }

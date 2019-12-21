@@ -41,7 +41,7 @@
             <RelativeLayout style="@style/profileDetailsLayout">
                 <ImageView
                     android:id="@+id/nameImageView"
-                    android:src="@drawable/ic_taxi"
+                    android:src="@drawable/ic_book"
                     style="@style/profileDetailsImage" />
                 <TextView
                     android:id="@+id/nameTextView"
@@ -59,7 +59,7 @@
             <RelativeLayout style="@style/profileDetailsLayout">
                 <ImageView
                     android:id="@+id/mobileImageView"
-                    android:src="@drawable/ic_taxi"
+                    android:src="@drawable/ic_directions"
                     style="@style/profileDetailsImage" />
                 <TextView
                     android:text="Travel Type"
@@ -91,7 +91,7 @@
             <RelativeLayout style="@style/profileDetailsLayout">
                 <ImageView
                     android:id="@+id/addressImageView"
-                    android:src="@drawable/ic_taxi"
+                    android:src="@drawable/ic_room"
                     style="@style/profileDetailsImage" />
                 <TextView
                     android:text="Pick up Location"
@@ -109,7 +109,7 @@
                 >
                 <ImageView
                     android:id="@+id/dobImageView"
-                    android:src="@drawable/ic_taxi"
+                    android:src="@drawable/ic_pin_drop"
                     style="@style/profileDetailsImage" />
                 <TextView
                     android:text="Drop Location"
@@ -125,7 +125,7 @@
             <RelativeLayout style="@style/profileDetailsLayout" android:id="@+id/package_area">
                 <ImageView
                     android:id="@+id/package_"
-                    android:src="@drawable/ic_taxi"
+                    android:src="@drawable/ic_business"
                     style="@style/profileDetailsImage" />
                 <TextView
                     android:text="Package"
@@ -142,7 +142,7 @@
             <RelativeLayout style="@style/profileDetailsLayout">
                 <ImageView
                     android:id="@+id/package__"
-                    android:src="@drawable/ic_taxi"
+                    android:src="@drawable/ic_date"
                     style="@style/profileDetailsImage" />
                 <TextView
                     android:text="Time"

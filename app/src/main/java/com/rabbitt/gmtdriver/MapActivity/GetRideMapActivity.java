@@ -1,6 +1,8 @@
 package com.rabbitt.gmtdriver.MapActivity;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -23,6 +25,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -62,12 +65,15 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.rabbitt.gmtdriver.CurrentRide.CurrentRide;
+import com.rabbitt.gmtdriver.MainActivity;
 import com.rabbitt.gmtdriver.MapAnimator.DataParser;
 import com.rabbitt.gmtdriver.MapAnimator.MapAnimator;
 import com.rabbitt.gmtdriver.Odometer.OdometerService;
 import com.rabbitt.gmtdriver.R;
 import com.rabbitt.gmtdriver.RideAlert;
 import com.rabbitt.gmtdriver.Utils.Config;
+import com.rabbitt.gmtdriver.VolleySingleton;
 
 import org.json.JSONObject;
 
@@ -105,34 +111,31 @@ public class GetRideMapActivity extends FragmentActivity implements OnMapReadyCa
 
     LatLng oriLatlng, desLatlng, userLatlng;
 
-    String oriLati;
-    String oriLngi;
-    String desLati;
-    String desLngi;
+    String oriLati,oriLngi,desLati,desLngi;
+
+    String book_id;
 
     String type_, package_, vehicle_;
 
     TextView distance;
-    LocationListener mloclisterner;
 
     ProgressBar progressBar;
 
     //track distance code starts here
     OdometerService odo;
     boolean bound;
-    BroadcastReceiver broadcastReceiver;
-    private final int PERMISSION_REQUEST_CODE = 698;
-
     //timer
-    private Button btn_start, btn_cancel;
+//    private Button btn_start, btn_cancel;
     private TextView tv_timer;
-    String date_time;
-    Calendar calendar;
-    SimpleDateFormat simpleDateFormat;
-    EditText et_hours;
+//    EditText et_hours;
 
     SharedPreferences mpref;
     SharedPreferences.Editor mEditor;
+
+    LinearLayout after_layout;
+    ProgressDialog p;
+
+    Button cancel_btn, finish_btn;
 
 
     @Override
@@ -146,9 +149,12 @@ public class GetRideMapActivity extends FragmentActivity implements OnMapReadyCa
         distance = findViewById(R.id.dist);
         MarkerPoints = new ArrayList<>();
         progressBar = findViewById(R.id.progressBar_cyclic);
+        cancel_btn = findViewById(R.id.decline);
+        finish_btn = findViewById(R.id.finished);
 
         //distance tracking code
         Intent intento = new Intent(this, OdometerService.class);
+
         bindService(intento, connection, Context.BIND_AUTO_CREATE);
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
@@ -169,7 +175,6 @@ public class GetRideMapActivity extends FragmentActivity implements OnMapReadyCa
         }
         mapFragment.getMapAsync(this);
 
-//        mloclisterner = new MyLocationListener();
         //get Current Location on app launch
 
         mGoogleApiClient = new GoogleApiClient.Builder(this)
@@ -181,17 +186,10 @@ public class GetRideMapActivity extends FragmentActivity implements OnMapReadyCa
 
         //getting intent values
         Intent intent = getIntent();
-        oriLati = intent.getStringExtra(RideAlert.oriLata);
-        oriLngi = intent.getStringExtra(RideAlert.oriLnga);
+        book_id = intent.getStringExtra("book_id");
+        type_ = intent.getStringExtra("type");
 
-        desLati = intent.getStringExtra(RideAlert.desLata);
-        desLngi = intent.getStringExtra(RideAlert.desLnga);
 
-        type_ = intent.getStringExtra(RideAlert.typeI);
-        vehicle_ = intent.getStringExtra(RideAlert.vehicleI);
-
-        package_ = intent.getStringExtra(RideAlert.packageI);
-        progressBar.setVisibility(View.VISIBLE);
 
         init();
     }
@@ -199,78 +197,40 @@ public class GetRideMapActivity extends FragmentActivity implements OnMapReadyCa
     private void init() {
 
         tv_timer = findViewById(R.id.timer);
-
+        after_layout = findViewById(R.id.after_taken);
         mpref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         mEditor = mpref.edit();
+        p = new ProgressDialog(this);
+        p.setMessage("Please wait...");
+        p.setIndeterminate(false);
+        p.setCancelable(false);
+        p = new ProgressDialog(this);
 
         try {
             String str_value = mpref.getString("data", "");
             if (str_value.matches("")) {
-                et_hours.setEnabled(true);
-                btn_start.setEnabled(true);
                 tv_timer.setText("");
 
             } else {
 
                 if (mpref.getBoolean("finish", false)) {
-                    et_hours.setEnabled(true);
-                    btn_start.setEnabled(true);
                     tv_timer.setText("");
                 } else {
-
-                    et_hours.setEnabled(false);
-                    btn_start.setEnabled(false);
                     tv_timer.setText(str_value);
                 }
             }
         } catch (Exception e) {
-            Log.i(TAG, "init: "+e.getMessage());
+            Log.i(TAG, "init: " + e.getMessage());
         }
 
+        new getRideTask().execute();
 
     }
+   ///////////////////////////////////////////////////////////////////////////////////////////
 
-    public void startTimer()
-    {
-//        int int_hours = 1;
-//
-//        if (int_hours<=24) {
-//
-////            et_hours.setEnabled(false);
-////            btn_start.setEnabled(false);
-//
-//
-//            calendar = Calendar.getInstance();
-//            simpleDateFormat = new SimpleDateFormat("HH:mm:ss");
-//            date_time = simpleDateFormat.format(calendar.getTime());
-//
-//            mEditor.putString("data", date_time).commit();
-//            mEditor.putString("hours", "1").commit();
-//
-
-            Intent intent_service = new Intent(getApplicationContext(), TimerService.class);
-            startService(intent_service);
-
-//        }else {
-//            Toast.makeText(getApplicationContext(),"Please select the value below 24 hours",Toast.LENGTH_SHORT).show();
-//        }
-/*
-                mTimer = new Timer();
-                mTimer.scheduleAtFixedRate(new TimeDisplayTimerTask(), 5, NOTIFY_INTERVAL);*/
-//    } else {
-//        Toast.makeText(getApplicationContext(), "Please select value", Toast.LENGTH_SHORT).show();
-//    }
-//            break;
-
-
-//        case R.id.btn_cancel:
-//
-//
-//
-//
-//            break;
-
-
+    public void startTimer() {
+        Intent intent_service = new Intent(getApplicationContext(), TimerService.class);
+        startService(intent_service);
     }
 
     private BroadcastReceiver timeReceiver = new BroadcastReceiver() {
@@ -281,17 +241,13 @@ public class GetRideMapActivity extends FragmentActivity implements OnMapReadyCa
         }
     };
 
-    public void stoptimer()
-    {
+    public void stoptimer() {
         Intent intent = new Intent(getApplicationContext(), TimerService.class);
         stopService(intent);
-
         mEditor.clear().commit();
-//        et_hours.setEnabled(true);
-//        btn_start.setEnabled(true);
-        tv_timer.setText("");
-
     }
+
+//////////////////////////////////////////////////////////////////////////////////////////////
     private void checkLocationPermission() {
         Log.i(TAG, "checklocationpermission");
 
@@ -330,7 +286,6 @@ public class GetRideMapActivity extends FragmentActivity implements OnMapReadyCa
 
         @Override
         public void onServiceDisconnected(ComponentName name) {
-
             bound = false;
         }
     };
@@ -433,9 +388,7 @@ public class GetRideMapActivity extends FragmentActivity implements OnMapReadyCa
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-
         mMap = googleMap;
-
         Log.i(TAG, "onMapReady: " + Thread.currentThread().getName() + " ID:" + Thread.currentThread().getId());
         // Add a marker in Sydney and move the camera
 //        LatLng sydney = new LatLng(-34, 151);
@@ -445,8 +398,59 @@ public class GetRideMapActivity extends FragmentActivity implements OnMapReadyCa
                 == PackageManager.PERMISSION_GRANTED) {
             mMap.setMyLocationEnabled(true);
         }
+    }
 
-        typeFinding(oriLati, oriLngi, desLati, desLngi, type_, package_, vehicle_);
+    @SuppressLint("StaticFieldLeak")
+    private class getRideTask extends AsyncTask<Void, Void, Void> {
+
+        // Runs in UI before background thread is called
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            p.show();
+            // Do something like display a progress bar
+        }
+
+        // This is run in a background thread
+        @Override
+        protected Void doInBackground(Void... params) {
+
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, Config.GETRIDE_DETAILS, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+
+
+
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+
+                }
+            }){
+                @Override
+                protected Map<String, String> getParams() {
+                    Map<String, String> params = new HashMap<>();
+                    //Adding the parameters to the request
+                    params.put("TYPE", type_);
+                    params.put("BOOK_ID", book_id);
+                    return params;
+                }
+            };
+
+            VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(stringRequest);
+
+            return null;
+
+        }
+
+        // This runs in UI when background thread finishes
+        @Override
+        protected void onPostExecute(Void result) {
+            p.dismiss();
+            typeFinding(oriLati, oriLngi, desLati, desLngi, type_);
+            // Do things like hide the progress bar or change a TextView
+        }
     }
 
     @Override
@@ -478,45 +482,9 @@ public class GetRideMapActivity extends FragmentActivity implements OnMapReadyCa
     @Override
     public void onLocationChanged(Location location) {
         Log.i(TAG, "locationchanged");
-
         //Place current location marker
         userLatlng = new LatLng(location.getLatitude(), location.getLongitude());
-
         Log.i(TAG, "onLocationChanged: " + userLatlng);
-
-//        options = new MarkerOptions();
-//
-//        // Setting the position of the marker
-//        options.position(userLatlng);
-//
-//        //move map camerax
-//        mMap.moveCamera(CameraUpdateFactory.newLatLng(userLatlng));
-//        mMap.animateCamera(CameraUpdateFactory.zoomTo(11));
-//
-//        //stop location updates
-//        if (mGoogleApiClient != null) {
-//            LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
-//        }
-//
-//        Toast.makeText(this, "userlatlng..."+userLatlng.toString(), Toast.LENGTH_SHORT).show();
-////      //  creating marker onload as staring
-////        LatLng latLng1 = new LatLng(location.getLatitude(), location.getLongitude());
-//
-//        if (userMarker!=null)
-//        {
-//            userMarker.remove();
-//        }
-//
-//        MarkerOptions markerOptionsOri = new MarkerOptions();
-//        markerOptionsOri.position(userLatlng);
-//        markerOptionsOri.title("Your are here");
-//        markerOptionsOri.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
-//        userMarker = mMap.addMarker(markerOptionsOri);
-//        mMap.addMarker(markerOptionsOri).setDraggable(true);
-//        MarkerPoints.add(0, userLatlng);
-//        //move map camera
-//        mMap.moveCamera(CameraUpdateFactory.newLatLng(userLatlng));
-//        mMap.animateCamera(CameraUpdateFactory.zoomTo(17));
     }
 
     public void getRide(View view) {
@@ -526,7 +494,11 @@ public class GetRideMapActivity extends FragmentActivity implements OnMapReadyCa
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface arg0, int arg1) {
+                        after_layout.setVisibility(View.VISIBLE);
+                        cancel_btn.setEnabled(false);
+                        finish_btn.setEnabled(true);
                         displayDistance();
+                        startTimer();
                     }
                 });
 
@@ -542,11 +514,10 @@ public class GetRideMapActivity extends FragmentActivity implements OnMapReadyCa
     }
 
     public void decline(View view) {
-
-
+        startActivity(new Intent(this, MainActivity.class));
     }
 
-    //user defined functions
+    //user defined functions//--------------------------------------------------------------------------------------------
     private void outstationAnimator(final LatLng oriLatlng, final LatLng desLatlng) {
         MarkerOptions markerOptionsOri = new MarkerOptions();
         markerOptionsOri.position(oriLatlng);
@@ -641,7 +612,7 @@ public class GetRideMapActivity extends FragmentActivity implements OnMapReadyCa
         //calling zoomfuntion
     }
 
-    public void typeFinding(String oriLati, String oriLngi, String desLati, String desLngi, String type_, String package_, String vehicle_) {
+    public void typeFinding(String oriLati, String oriLngi, String desLati, String desLngi, String type_) {
         //converting string to double
         double oriLat = Double.parseDouble(oriLati);
         double oriLng = Double.parseDouble(oriLngi);
@@ -653,13 +624,13 @@ public class GetRideMapActivity extends FragmentActivity implements OnMapReadyCa
         desLatlng = new LatLng(desLat, desLng);
 
         switch (type_) {
-            case "rental":
+            case "RNT":
                 rentalAnimator(oriLatlng);
                 break;
-            case "city":
+            case "CTY":
                 cityAnimator(oriLatlng, desLatlng);
                 break;
-            case "outstation":
+            case "OST":
                 outstationAnimator(oriLatlng, desLatlng);
                 break;
             default:
@@ -669,35 +640,14 @@ public class GetRideMapActivity extends FragmentActivity implements OnMapReadyCa
 //        displayDistance();
     }
 
-    String distanceStr;
     private void displayDistance() {
         try {
-//            new Thread() {
-//                public void run() {
-//                    double dist = 0.0;
-//                    if (bound && odo != null) {
-//                        dist = odo.getDistance();
-//                    }
-//                    double finalDist = dist;
-//                    Log.i(TAG, "run: "+dist);
-//                    //calling polyline
-//                    distanceStr = String.valueOf(finalDist);
-//
-//                    runOnUiThread(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            distance.setText(distanceStr);
-//                        }
-//                    });
-//                }
-//            }.start();
-
             final Handler handler = new Handler();
             handler.post(new Runnable() {
                 @Override
                 public void run() {
                     double dist = 0.0;
-                    if(odo != null){
+                    if (odo != null) {
                         dist = odo.getDistance();
                     }
                     String distanceStr = String.format("%1$,.2f Km", dist);
@@ -837,7 +787,7 @@ public class GetRideMapActivity extends FragmentActivity implements OnMapReadyCa
         return data;
     }
 
-    private void startTimerDistance() {
+    private void CalculateBill() {
         //fetch value from the database
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, Config.RATE_CALCULATION,
@@ -869,10 +819,10 @@ public class GetRideMapActivity extends FragmentActivity implements OnMapReadyCa
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
                 //Adding the parameters to the request
-                params.put("TYPE", "101");
-                params.put("VEHICLE", "11.6542");
-                params.put("LNG", "76.6542");
-                params.put("ONDUTY", "");
+                params.put("TYPE", type_);
+                params.put("BOOK_ID", book_id);
+                params.put("TIME", tv_timer.getText().toString());
+                params.put("DISTANCE", distance.getText().toString());
                 return params;
             }
         };
@@ -881,15 +831,6 @@ public class GetRideMapActivity extends FragmentActivity implements OnMapReadyCa
 //        requestQueue.add(stringRequest);
 
     }
-
-    public void stopTimer(View view) {
-        stoptimer();
-    }
-
-    public void startTimer(View view) {
-        startTimer();
-    }
-
 
     // Fetches data from url passed
     private class FetchUrl extends AsyncTask<String, Void, String> {
@@ -923,6 +864,10 @@ public class GetRideMapActivity extends FragmentActivity implements OnMapReadyCa
     }
 
     private class ParserTask extends AsyncTask<String, Integer, List<List<HashMap<String, String>>>> {
+        @Override
+        protected void onPreExecute() {
+            p.show();
+        }
 
         // Parsing the data in non-ui thread
         @Override
@@ -993,31 +938,24 @@ public class GetRideMapActivity extends FragmentActivity implements OnMapReadyCa
             // Drawing polyline in the Google Map for the i-th route
             if (lineOptions != null) {
                 mMap.addPolyline(lineOptions);
+                p.dismiss();
             } else {
                 Log.d("onPostExecute", "without Polylines drawn");
             }
         }
     }
 
-    public void demo() {
-        new Thread() {
-            public void run() {
+    public void finishRide(View view) {
 
-
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-
-                    }
-                });
-            }
-        }.start();
+        stoptimer();
+        Intent billIntent = new Intent(this, BillActivity.class);
+        startActivity(billIntent);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        registerReceiver(timeReceiver,new IntentFilter(TimerService.str_receiver));
+        registerReceiver(timeReceiver, new IntentFilter(TimerService.str_receiver));
     }
 
     @Override

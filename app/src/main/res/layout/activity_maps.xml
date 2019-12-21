@@ -2,9 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MapActivity.MapsActivity">
-
+    android:layout_height="match_parent" >
 
 
     <ProgressBar
@@ -28,84 +26,105 @@
     <LinearLayout
         android:id="@+id/liner"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="0dp"
         android:background="@color/tranfer_color"
         android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <Button
-            android:id="@+id/decline"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/colorPrimaryDark"
-            android:textColor="@color/text_color"
-            android:textStyle="bold"
-            android:layout_margin="5dp"
-            android:onClick="decline"
-            android:layout_weight="1"
-            android:text="Cancel" />
-
-        <Button
-            android:id="@+id/accept"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/colorPrimaryDark"
-            android:layout_margin="5dp"
-            android:textColor="@color/text_color"
-            android:textStyle="bold"
-            android:onClick="getRide"
-            android:layout_weight="1"
-            android:text="Get Ride" />
-    </LinearLayout>
-
         <LinearLayout
             android:layout_width="match_parent"
-            android:orientation="horizontal"
             android:layout_height="wrap_content">
 
             <Button
-                android:id="@+id/start"
+                android:id="@+id/decline"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@color/colorPrimaryDark"
-                android:textColor="@color/text_color"
-                android:textStyle="bold"
                 android:layout_margin="5dp"
-                android:onClick="startTimer"
                 android:layout_weight="1"
-                android:text="Cancel" />
-            <Button
-                android:id="@+id/stop"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:background="@color/colorPrimaryDark"
+                android:onClick="decline"
+                android:text="Cancel"
                 android:textColor="@color/text_color"
-                android:textStyle="bold"
-                android:layout_margin="5dp"
-                android:onClick="stopTimer"
-                android:layout_weight="1"
-                android:text="Cancel" />
-            <TextView
-                android:id="@+id/dist"
-                android:padding="10dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/text_color"
-                android:text="0" />
+                android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/timer"
-                android:padding="10dp"
+            <Button
+                android:id="@+id/accept"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:layout_weight="1"
+                android:background="@color/colorPrimaryDark"
+                android:onClick="getRide"
+                android:text="Get Ride"
                 android:textColor="@color/text_color"
-                android:text="timer" />
+                android:textStyle="bold" />
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/after_taken"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="visible">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:layout_margin="5dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Distance Travelled:"
+                    android:textColor="@color/text_color" />
+
+                <TextView
+                    android:id="@+id/dist"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:text="0"
+                    android:textColor="@color/text_color" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Time:"
+                    android:textColor="@color/text_color" />
+
+                <TextView
+                    android:id="@+id/timer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:text="timer"
+                    android:textColor="@color/text_color" />
+
+                <!--            </androidx.cardview.widget.CardView>-->
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/finished"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:background="@color/colorPrimaryDark"
+                    android:enabled="false"
+                    android:onClick="finishRide"
+                    android:text="Finish Ride"
+                    android:textColor="@color/text_color"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+        </LinearLayout>
 
 
     </LinearLayout>

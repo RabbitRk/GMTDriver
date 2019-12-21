@@ -101,6 +101,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         double user_lat = location.getLatitude();
         double user_lng = location.getLongitude();
 
+        Log.i(TAG, "onLocationChanged: "+user_lat+user_lng);
+
         updateDriverLocation(user_lat, user_lng);
     }
 

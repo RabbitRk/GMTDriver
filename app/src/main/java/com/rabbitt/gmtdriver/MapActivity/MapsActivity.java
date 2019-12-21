@@ -1,14 +1,7 @@
 package com.rabbitt.gmtdriver.MapActivity;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.FragmentActivity;
-
 import android.Manifest;
-import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -19,25 +12,29 @@ import android.content.IntentSender;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.location.Address;
-import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
-import android.os.Looper;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentActivity;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -48,7 +45,6 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
-import com.google.android.gms.common.internal.Constants;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
@@ -67,13 +63,16 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.rabbitt.gmtdriver.MainActivity;
 import com.rabbitt.gmtdriver.MapAnimator.DataParser;
 import com.rabbitt.gmtdriver.MapAnimator.MapAnimator;
 import com.rabbitt.gmtdriver.Odometer.OdometerService;
 import com.rabbitt.gmtdriver.R;
 import com.rabbitt.gmtdriver.RideAlert;
 import com.rabbitt.gmtdriver.Utils.Config;
+import com.rabbitt.gmtdriver.VolleySingleton;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -82,14 +81,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
-import java.util.Timer;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
@@ -106,8 +101,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     //map utils
     private GoogleMap mMap;
     ArrayList<LatLng> MarkerPoints;
-    MarkerOptions options = new MarkerOptions();
-    private Marker oriMarker, destMarker, userMarker;
+//    MarkerOptions options = new MarkerOptions();
+    private Marker oriMarker, destMarker;
     LocationRequest mLocationRequest;
 
     LatLng oriLatlng, desLatlng, userLatlng;
@@ -120,26 +115,25 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     String type_, package_, vehicle_;
 
     TextView distance;
-    LocationListener mloclisterner;
 
     ProgressBar progressBar;
 
     //track distance code starts here
     OdometerService odo;
     boolean bound;
-    BroadcastReceiver broadcastReceiver;
-    private final int PERMISSION_REQUEST_CODE = 698;
 
     //timer
-//    private Button btn_start, btn_cancel;
     private TextView tv_timer;
-    String date_time;
-    Calendar calendar;
-    SimpleDateFormat simpleDateFormat;
 //    EditText et_hours;
 
     SharedPreferences mpref;
     SharedPreferences.Editor mEditor;
+
+    LinearLayout after_layout;
+    ProgressDialog p;
+
+    Button cancel_btn, finish_btn;
+
 
 
     @Override
@@ -153,6 +147,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         distance = findViewById(R.id.dist);
         MarkerPoints = new ArrayList<>();
         progressBar = findViewById(R.id.progressBar_cyclic);
+        cancel_btn = findViewById(R.id.decline);
+        finish_btn = findViewById(R.id.finished);
 
         //distance tracking code
         Intent intento = new Intent(this, OdometerService.class);
@@ -208,7 +204,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         tv_timer = findViewById(R.id.timer);
 
         mpref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        mEditor = mpref.edit();
+//        mEditor = mpref.edit();
 
         try {
             String str_value = mpref.getString("data", "");
@@ -345,7 +341,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private void turnOnGPS() {
         final LocationManager manager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-        if (manager.isProviderEnabled(LocationManager.GPS_PROVIDER) && hasGPSDevice(this)) {
+        if (manager != null && manager.isProviderEnabled(LocationManager.GPS_PROVIDER) && hasGPSDevice(this)) {
             Toast.makeText(this, "Gps already enabled", Toast.LENGTH_SHORT).show();
 
         }
@@ -353,17 +349,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             Toast.makeText(this, "Gps not Supported", Toast.LENGTH_SHORT).show();
         }
 
-        if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER) && hasGPSDevice(this)) {
-            Log.e("keshav", "Gps already enabled");
-            Toast.makeText(this, "Gps not enabled", Toast.LENGTH_SHORT).show();
-            enableLoc();
-        } else {
-            Log.e("keshav", "Gps already enabled");
-            Toast.makeText(this, "Gps already enabled", Toast.LENGTH_SHORT).show();
+        if (manager != null) {
+            if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER) && hasGPSDevice(this)) {
+                Log.e("keshav", "Gps already enabled");
+                Toast.makeText(this, "Gps not enabled", Toast.LENGTH_SHORT).show();
+                enableLoc();
+            } else {
+                Log.e("keshav", "Gps already enabled");
+                Toast.makeText(this, "Gps already enabled", Toast.LENGTH_SHORT).show();
+            }
         }
         LocationManager service = (LocationManager) getSystemService(LOCATION_SERVICE);
-        boolean enabled = service
-                .isProviderEnabled(LocationManager.GPS_PROVIDER);
+        boolean enabled = false;
+        if (service != null) {
+            enabled = service
+                    .isProviderEnabled(LocationManager.GPS_PROVIDER);
+        }
         if (!enabled) {
             Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
             startActivity(intent);
@@ -376,8 +377,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if (mgr == null)
             return false;
         final List<String> providers = mgr.getAllProviders();
-        if (providers == null)
-            return false;
         return providers.contains(LocationManager.GPS_PROVIDER);
     }
 
@@ -399,7 +398,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     })
                     .addOnConnectionFailedListener(new GoogleApiClient.OnConnectionFailedListener() {
                         @Override
-                        public void onConnectionFailed(ConnectionResult connectionResult) {
+                        public void onConnectionFailed(@NotNull ConnectionResult connectionResult) {
 
                             Log.d("Location error", "Location error " + connectionResult.getErrorCode());
                         }
@@ -420,18 +419,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     LocationServices.SettingsApi.checkLocationSettings(mGoogleApiClient, builder.build());
             result.setResultCallback(new ResultCallback<LocationSettingsResult>() {
                 @Override
-                public void onResult(LocationSettingsResult result) {
+                public void onResult(@NotNull LocationSettingsResult result) {
                     final Status status = result.getStatus();
-                    switch (status.getStatusCode()) {
-                        case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
-                            try {
-                                // Show the dialog by calling startResolutionForResult(),
-                                // and check the result in onActivityResult().
-                                status.startResolutionForResult(MapsActivity.this, REQUEST_LOCATION);
-                            } catch (IntentSender.SendIntentException e) {
-                                // Ignore the error.
-                            }
-                            break;
+                    if (status.getStatusCode() == LocationSettingsStatusCodes.RESOLUTION_REQUIRED) {
+                        try {
+                            // Show the dialog by calling startResolutionForResult(),
+                            // and check the result in onActivityResult().
+                            status.startResolutionForResult(MapsActivity.this, REQUEST_LOCATION);
+                        } catch (IntentSender.SendIntentException e) {
+                            // Ignore the error.
+                        }
                     }
                 }
             });
@@ -453,7 +450,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             mMap.setMyLocationEnabled(true);
         }
 
-        typeFinding(oriLati, oriLngi, desLati, desLngi, type_, package_, vehicle_);
+        typeFinding(oriLati, oriLngi, desLati, desLngi, type_);
     }
 
     @Override
@@ -474,7 +471,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onConnectionSuspended(int i) {
-
+//
     }
 
     @Override
@@ -506,8 +503,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 //        }
 //
 //        Toast.makeText(this, "userlatlng..."+userLatlng.toString(), Toast.LENGTH_SHORT).show();
-////      //  creating marker onload as staring
-////        LatLng latLng1 = new LatLng(location.getLatitude(), location.getLongitude());
+//      //  creating marker onload as staring
+//        LatLng latLng1 = new LatLng(location.getLatitude(), location.getLongitude());
 //
 //        if (userMarker!=null)
 //        {
@@ -533,6 +530,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface arg0, int arg1) {
+                        after_layout.setVisibility(View.VISIBLE);
+                        cancel_btn.setEnabled(false);
+                        finish_btn.setEnabled(true);
+                        displayDistance();
+                        startTimer();
                         displayDistance();
                     }
                 });
@@ -549,8 +551,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     public void decline(View view) {
-
-
+        startActivity(new Intent(this, MainActivity.class));
     }
 
     //user defined functions
@@ -648,7 +649,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //calling zoomfuntion
     }
 
-    public void typeFinding(String oriLati, String oriLngi, String desLati, String desLngi, String type_, String package_, String vehicle_) {
+    public void typeFinding(String oriLati, String oriLngi, String desLati, String desLngi, String type_) {
         //converting string to double
         double oriLat = Double.parseDouble(oriLati);
         double oriLng = Double.parseDouble(oriLngi);
@@ -676,7 +677,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 //        displayDistance();
     }
 
-    String distanceStr;
     private void displayDistance() {
         try {
 //            new Thread() {
@@ -715,7 +715,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         } catch (Exception ex) {
             Log.i(TAG, "animatePath Catch: " + ex.getMessage());
         }
-
     }
 
     private void zoomout(Marker oriMarker, Marker destMarker) {
@@ -765,7 +764,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 //            Log.i(TAG, "animatePath Catch: "+ex.getMessage());
 //        }
 
-
         // Getting URL to the Google Directions API
         String url = getUrl(origin, dest);
         Log.d("onMapClick", url);
@@ -812,29 +810,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         HttpURLConnection urlConnection = null;
         try {
             URL url = new URL(strUrl);
-
             // Creating an http connection to communicate with url
             urlConnection = (HttpURLConnection) url.openConnection();
-
             // Connecting to url
             urlConnection.connect();
-
             // Reading data from url
             iStream = urlConnection.getInputStream();
-
             BufferedReader br = new BufferedReader(new InputStreamReader(iStream));
-
             StringBuffer sb = new StringBuffer();
-
             String line = "";
             while ((line = br.readLine()) != null) {
                 sb.append(line);
             }
-
             data = sb.toString();
             Log.d("downloadUrl", data);
             br.close();
-
         } catch (Exception e) {
             Log.d("Exception", e.toString());
         } finally {
@@ -851,9 +841,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-
                         Log.i(TAG, "Responce.............." + response);
-
                         try {
                             if (response.equals("success")) {
                                 Toast.makeText(getApplicationContext(), "Status updated", Toast.LENGTH_SHORT).show();
@@ -885,17 +873,25 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         };
 
         //Adding request the the queue
-//        requestQueue.add(stringRequest);
+        VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(stringRequest);
 
     }
 
-    public void stopTimer(View view) {
+    public void finishRide(View view) {
+
         stoptimer();
+
+        Intent billIntent = new Intent(this, BillActivity.class);
+        startActivity(billIntent);
     }
 
-    public void startTimer(View view) {
-        startTimer();
-    }
+//    public void stopTimer(View view) {
+//        stoptimer();
+//    }
+//
+//    public void startTimer(View view) {
+//        startTimer();
+//    }
 
 
     // Fetches data from url passed

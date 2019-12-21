@@ -122,11 +122,42 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void loginto() {
-        Intent mainA = new Intent(getApplicationContext(), MainActivity.class);
-        mainA.putExtra("UserId", getId);
-        startActivity(mainA);
-        finish();
-        Log.i(LOG_TAG, "Hid.............." + getId);
+
+        //Again creating the string request
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Config.DRIVER_STATUS_INSERT,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                        Log.i(LOG_TAG, "Responce.............." + response);
+
+                        Intent mainA = new Intent(getApplicationContext(), MainActivity.class);
+                        mainA.putExtra("UserId", getId);
+                        startActivity(mainA);
+                        finish();
+                        Log.i(LOG_TAG, "Hid.............." + getId);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.i(LOG_TAG, "volley error.............................." + error.getMessage());
+//                        Toast.makeText(getApplicationContext(), "User not found", Toast.LENGTH_LONG).show();
+                    }
+                })
+        {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                //Adding the parameters to the request
+                params.put("USER_ID", getId);
+                return params;
+            }
+        };
+
+        //Adding request the the queue
+        VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(stringRequest);
+
     }
 
     private void setPrefsdetails(String getId, String puserTxt, String pemailTxt) {
