@@ -90,16 +90,36 @@
             <View style="@style/proifleDetailsView" />
             <RelativeLayout style="@style/profileDetailsLayout">
                 <ImageView
+                    android:id="@+id/emailImageVie"
+                    android:src="@drawable/ic_taxi"
+                    style="@style/profileDetailsImage" />
+                <TextView
+                    android:text="Vehicle Number"
+                    android:id="@+id/v_no_lb"
+                    android:layout_toEndOf="@id/emailImageVie"
+                    style="@style/profileDetailsTextMain" />
+                <TextView
+                    android:id="@+id/vehcile_no"
+                    android:text="-"
+                    android:layout_below="@+id/v_no_lb"
+                    android:layout_toEndOf="@id/emailImageVie"
+                    style="@style/profileDetailsMiniText" />
+            </RelativeLayout>
+            <View style="@style/proifleDetailsView" />
+            <RelativeLayout style="@style/profileDetailsLayout">
+                <ImageView
                     android:id="@+id/addressImageView"
                     android:src="@drawable/ic_room"
                     style="@style/profileDetailsImage" />
                 <TextView
                     android:text="Pick up Location"
+                    android:id="@+id/p_u_lb"
                     android:layout_toEndOf="@id/addressImageView"
                     style="@style/profileDetailsTextMain" />
                 <TextView
                     android:id="@+id/pickup"
                     android:text="-"
+                    android:layout_below="@+id/p_u_lb"
                     android:layout_toEndOf="@id/addressImageView"
                     style="@style/profileDetailsMiniText" />
             </RelativeLayout>
@@ -113,11 +133,13 @@
                     style="@style/profileDetailsImage" />
                 <TextView
                     android:text="Drop Location"
+                    android:id="@+id/d_lb"
                     android:layout_toEndOf="@id/dobImageView"
                     style="@style/profileDetailsTextMain" />
                 <TextView
                     android:id="@+id/drop"
                     android:text="-"
+                    android:layout_below="@+id/d_lb"
                     android:layout_toEndOf="@id/dobImageView"
                     style="@style/profileDetailsMiniText" />
             </RelativeLayout>

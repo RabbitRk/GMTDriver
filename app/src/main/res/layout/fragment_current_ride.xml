@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
     android:orientation="vertical"
     tools:context=".CurrentRide.CurrentRide">
 
@@ -13,33 +14,297 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/Login_page.AppBarOverlay">
+
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimaryDark"
             app:popupTheme="@style/Login_page.PopupOverlay"
-            app:title="GMT Cabs">
-        </androidx.appcompat.widget.Toolbar>
+            app:title="GMT Cabs" />
+
     </com.google.android.material.appbar.AppBarLayout>
 
-
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tablayout"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/data_avail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:tabIndicatorColor="@color/colorAccent">
+        app:cardBackgroundColor="@color/colorPrimary">
 
-    </com.google.android.material.tabs.TabLayout>
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/pager"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="20dp"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/headerText"
+                    android:layout_marginBottom="20dp"
+                    android:text="Upcoming Ride" />
+
+                <RelativeLayout style="@style/profileDetailsLayout">
+
+                    <ImageView
+                        android:id="@+id/nameImageView"
+                        style="@style/profileDetailsImage"
+                        android:src="@drawable/ic_book" />
+
+                    <TextView
+                        android:id="@+id/nameTextView"
+                        style="@style/profileDetailsTextMain"
+                        android:layout_toEndOf="@id/nameImageView"
+                        android:text="Book ID" />
+
+                    <TextView
+                        android:id="@+id/book_id"
+                        style="@style/profileDetailsMiniText"
+                        android:layout_toEndOf="@id/nameImageView"
+                        android:text="-" />
+                </RelativeLayout>
+
+                <View style="@style/proifleDetailsView" />
+
+                <RelativeLayout style="@style/profileDetailsLayout">
+
+                    <ImageView
+                        android:id="@+id/mobileImageView"
+                        style="@style/profileDetailsImage"
+                        android:src="@drawable/ic_directions" />
+
+                    <TextView
+                        style="@style/profileDetailsTextMain"
+                        android:layout_toEndOf="@id/mobileImageView"
+                        android:text="Travel Type" />
+
+                    <TextView
+                        android:id="@+id/type"
+                        style="@style/profileDetailsMiniText"
+                        android:layout_toEndOf="@id/mobileImageView"
+                        android:text="-" />
+                </RelativeLayout>
+
+                <View style="@style/proifleDetailsView" />
+
+                <RelativeLayout style="@style/profileDetailsLayout">
+
+                    <ImageView
+                        android:id="@+id/emailImageView"
+                        style="@style/profileDetailsImage"
+                        android:src="@drawable/ic_taxi" />
+
+                    <TextView
+                        style="@style/profileDetailsTextMain"
+                        android:layout_toEndOf="@id/emailImageView"
+                        android:text="Vehicle Type" />
+
+                    <TextView
+                        android:id="@+id/vehcile"
+                        style="@style/profileDetailsMiniText"
+                        android:layout_toEndOf="@id/emailImageView"
+                        android:text="-" />
+                </RelativeLayout>
+
+                <View style="@style/proifleDetailsView" />
+
+                <RelativeLayout style="@style/profileDetailsLayout">
+
+                    <ImageView
+                        android:id="@+id/emailImageVie"
+                        style="@style/profileDetailsImage"
+                        android:src="@drawable/ic_taxi" />
+
+                    <TextView
+                        android:id="@+id/v_no_lb"
+                        style="@style/profileDetailsTextMain"
+                        android:layout_toEndOf="@id/emailImageVie"
+                        android:text="Vehicle Number" />
+
+                    <TextView
+                        android:id="@+id/vehcile_no"
+                        style="@style/profileDetailsMiniText"
+                        android:layout_below="@+id/v_no_lb"
+                        android:layout_toEndOf="@id/emailImageVie"
+                        android:text="-" />
+                </RelativeLayout>
+
+                <View style="@style/proifleDetailsView" />
+
+                <RelativeLayout style="@style/profileDetailsLayout">
+
+                    <ImageView
+                        android:id="@+id/addressImageView"
+                        style="@style/profileDetailsImage"
+                        android:src="@drawable/ic_room" />
+
+                    <TextView
+                        android:id="@+id/p_u_lb"
+                        style="@style/profileDetailsTextMain"
+                        android:layout_toEndOf="@id/addressImageView"
+                        android:text="Pick up Location" />
+
+                    <TextView
+                        android:id="@+id/pickup"
+                        style="@style/profileDetailsMiniText"
+                        android:layout_below="@+id/p_u_lb"
+                        android:layout_toEndOf="@id/addressImageView"
+                        android:text="-" />
+                </RelativeLayout>
+
+                <View style="@style/proifleDetailsView" />
+
+                <RelativeLayout
+                    android:id="@+id/drop_area"
+                    style="@style/profileDetailsLayout">
+
+                    <ImageView
+                        android:id="@+id/dobImageView"
+                        style="@style/profileDetailsImage"
+                        android:src="@drawable/ic_pin_drop" />
+
+                    <TextView
+                        android:id="@+id/d_lb"
+                        style="@style/profileDetailsTextMain"
+                        android:layout_toEndOf="@id/dobImageView"
+                        android:text="Drop Location" />
+
+                    <TextView
+                        android:id="@+id/drop"
+                        style="@style/profileDetailsMiniText"
+                        android:layout_below="@+id/d_lb"
+                        android:layout_toEndOf="@id/dobImageView"
+                        android:text="-" />
+                </RelativeLayout>
+
+                <View
+                    android:id="@+id/drop_line"
+                    style="@style/proifleDetailsView" />
+
+                <RelativeLayout
+                    android:id="@+id/package_area"
+                    style="@style/profileDetailsLayout">
+
+                    <ImageView
+                        android:id="@+id/package_"
+                        style="@style/profileDetailsImage"
+                        android:src="@drawable/ic_business" />
+
+                    <TextView
+                        style="@style/profileDetailsTextMain"
+                        android:layout_toEndOf="@id/package_"
+                        android:text="Package" />
+
+                    <TextView
+                        android:id="@+id/package_id"
+                        style="@style/profileDetailsMiniText"
+                        android:layout_toEndOf="@id/package_"
+                        android:text="-" />
+                </RelativeLayout>
+
+                <View
+                    android:id="@+id/package_line"
+                    style="@style/proifleDetailsView" />
+
+                <RelativeLayout style="@style/profileDetailsLayout">
+
+                    <ImageView
+                        android:id="@+id/package__"
+                        style="@style/profileDetailsImage"
+                        android:src="@drawable/ic_date" />
+
+                    <TextView
+                        style="@style/profileDetailsTextMain"
+                        android:layout_toEndOf="@id/package__"
+                        android:text="Time" />
+
+                    <TextView
+                        android:id="@+id/timeat"
+                        style="@style/profileDetailsMiniText"
+                        android:layout_toEndOf="@id/package__"
+                        android:text="-" />
+                </RelativeLayout>
+
+                <View style="@style/proifleDetailsView" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+<!--                    <Button-->
+<!--                        android:id="@+id/decline"-->
+<!--                        style="@android:style/ButtonBar"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_gravity="center"-->
+<!--                        android:layout_margin="10dp"-->
+<!--                        android:layout_weight="1"-->
+<!--                        android:background="@color/colorPrimary"-->
+<!--                        android:fontFamily="sans-serif"-->
+<!--                        android:text="Reject"-->
+<!--                        android:textColor="@color/text_color"-->
+<!--                        android:textStyle="bold" />-->
+
+                    <Button
+                        android:id="@+id/accept"
+                        style="@android:style/ButtonBar"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_margin="10dp"
+                        android:background="@color/colorPrimaryDark"
+                        android:fontFamily="sans-serif"
+                        android:text="Check availability"
+                        android:textColor="@color/text_color"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/not_avail"
+        android:visibility="gone"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="80dp"
+        android:layout_margin="20dp"
+        app:cardBackgroundColor="@color/colorPrimaryDark"
+        app:cardCornerRadius="10dp">
 
-    </androidx.viewpager.widget.ViewPager>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:drawableStart="@drawable/ic_do"
+            android:drawablePadding="10dp"
+            android:text="No rides available"
+            android:textColor="@color/colorPrimary"
+            android:textSize="25sp" />
+
+    </androidx.cardview.widget.CardView>
+    <!--    <com.google.android.material.tabs.TabLayout-->
+    <!--        android:id="@+id/tablayout"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:background="@color/colorPrimary"-->
+    <!--        android:minHeight="?attr/actionBarSize"-->
+    <!--        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"-->
+    <!--        app:tabIndicatorColor="@color/colorAccent">-->
+
+    <!--    </com.google.android.material.tabs.TabLayout>-->
+
+    <!--    <androidx.viewpager.widget.ViewPager-->
+    <!--        android:id="@+id/pager"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="match_parent">-->
+
+    <!--    </androidx.viewpager.widget.ViewPager>-->
 
 </LinearLayout>

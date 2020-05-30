@@ -60,4 +60,7 @@ public class prefsManager {
         user_editor.commit();
     }
 
+    public void removeprefs() {
+
+    }
 }

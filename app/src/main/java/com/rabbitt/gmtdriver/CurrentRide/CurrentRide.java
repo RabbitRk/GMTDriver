@@ -1,14 +1,19 @@
 package com.rabbitt.gmtdriver.CurrentRide;
 
+import android.app.Application;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
@@ -21,8 +26,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.RelativeLayout;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -32,6 +40,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.google.android.material.tabs.TabLayout;
 import com.rabbitt.gmtdriver.Adapter.RecycleAdapter;
 import com.rabbitt.gmtdriver.DBHelper.dbHelper;
+import com.rabbitt.gmtdriver.MapActivity.MapsActivity;
 import com.rabbitt.gmtdriver.Preferences.prefsManager;
 import com.rabbitt.gmtdriver.R;
 import com.rabbitt.gmtdriver.Utils.Config;
@@ -49,6 +58,19 @@ import java.util.Map;
 import java.util.Objects;
 
 import static android.content.Context.MODE_PRIVATE;
+import static com.rabbitt.gmtdriver.Firebase.FirebaseMessengingService.BOOK_ID;
+import static com.rabbitt.gmtdriver.Firebase.FirebaseMessengingService.DEST_LAT;
+import static com.rabbitt.gmtdriver.Firebase.FirebaseMessengingService.DEST_LNG;
+import static com.rabbitt.gmtdriver.Firebase.FirebaseMessengingService.DROP;
+import static com.rabbitt.gmtdriver.Firebase.FirebaseMessengingService.NOTIFY_SHARED_PREFS;
+import static com.rabbitt.gmtdriver.Firebase.FirebaseMessengingService.ORI_LAT;
+import static com.rabbitt.gmtdriver.Firebase.FirebaseMessengingService.ORI_LNG;
+import static com.rabbitt.gmtdriver.Firebase.FirebaseMessengingService.PACKAGE;
+import static com.rabbitt.gmtdriver.Firebase.FirebaseMessengingService.PICKUP;
+import static com.rabbitt.gmtdriver.Firebase.FirebaseMessengingService.TIME;
+import static com.rabbitt.gmtdriver.Firebase.FirebaseMessengingService.TYPE;
+import static com.rabbitt.gmtdriver.Firebase.FirebaseMessengingService.VEHICLE;
+import static com.rabbitt.gmtdriver.Firebase.FirebaseMessengingService.VEHICLE_ID;
 import static com.rabbitt.gmtdriver.Preferences.prefsManager.ID_KEY;
 import static com.rabbitt.gmtdriver.Preferences.prefsManager.LOG_STATUS;
 import static com.rabbitt.gmtdriver.Preferences.prefsManager.USER_PREFS;
@@ -70,6 +92,27 @@ public class CurrentRide extends Fragment {
     dbHelper database;
     String driver_id;
     prefsManager prefsManager;
+
+
+    Ringtone ringtone;
+    SharedPreferences shrp;
+
+    String book_id,type,vehicle,pickup,drop,time,package_type,ori_lat,ori_lng,dest_lat,dest_lng,vehicle_id;
+    Toolbar toolbar;
+
+    TextView book_idTxt, typeTxt, vehicleTxt, package_idTxt, pickupTxt, dropTxt, timeTxt, vehcile_no;
+    RelativeLayout drop_layout, package_layout;
+    View drop_line, package_line;
+    CardView data_avail, no_data_avail;
+
+    Button decline, accept;
+
+    public static final String oriLata = "orilat", oriLnga = "orilng";
+    public static final String desLata = "deslat", desLnga = "deslng";
+
+    public static final String typeI = "type";
+    public static final String vehicleI = "vehicle";
+    public static final String packageI = "package";
 
     public CurrentRide() {
         // Required empty public constructor
@@ -192,9 +235,143 @@ public class CurrentRide extends Fragment {
 //                    }
 //                }, 100);
 
+        toolbar.setTitle("Ride");
+
+        //Textview initialization
+        book_idTxt = view.findViewById(R.id.book_id);
+        typeTxt = view.findViewById(R.id.type);
+        vehicleTxt = view.findViewById(R.id.vehcile);
+        package_idTxt = view.findViewById(R.id.package_id);
+        pickupTxt = view.findViewById(R.id.pickup);
+        dropTxt = view.findViewById(R.id.drop);
+        timeTxt = view.findViewById(R.id.timeat);
+        vehcile_no = view.findViewById(R.id.vehcile_no);
+
+        //view initialization
+        drop_layout = view.findViewById(R.id.drop_area);
+        drop_line = view.findViewById(R.id.drop_line);
+        package_layout = view.findViewById(R.id.package_area);
+        package_line = view.findViewById(R.id.package_line);
+
+        //button initialization
+        decline = view.findViewById(R.id.decline);
+        accept = view.findViewById(R.id.accept);
+
+        //cardview initialization
+        data_avail = view.findViewById(R.id.data_avail);
+        no_data_avail = view.findViewById(R.id.not_avail);
+
+        //getting values from the sharedprefs
+        shrp = getActivity().getSharedPreferences(NOTIFY_SHARED_PREFS, MODE_PRIVATE);
+        book_id = shrp.getString(BOOK_ID, "0");
+        type = shrp.getString(TYPE, "0");
+        vehicle = shrp.getString(VEHICLE, "0");
+        pickup = shrp.getString(PICKUP, "0");
+        drop = shrp.getString(DROP, "0");
+        time = shrp.getString(TIME, "0");
+        package_type = shrp.getString(PACKAGE, "0");
+        ori_lat = shrp.getString(ORI_LAT, "0");
+        ori_lng = shrp.getString(ORI_LNG, "0");
+        dest_lat = shrp.getString(DEST_LAT, "0");
+        dest_lng = shrp.getString(DEST_LNG, "0");
+        vehicle_id = shrp.getString(VEHICLE_ID, "0");
+
+        //setting the info to the job alert page
+        book_idTxt.setText(book_id);
+        typeTxt.setText(type);
+        vehicleTxt.setText(vehicle);
+        pickupTxt.setText(pickup);
+        dropTxt.setText(drop);
+        timeTxt.setText(time);
+        package_idTxt.setText(package_type);
+        vehcile_no.setText(vehicle_id);
+
+        //visiblity controller
+        switch (type)
+        {
+            case "rental":
+                drop_layout.setVisibility(View.GONE);
+                drop_line.setVisibility(View.GONE);
+                break;
+            case "city":
+            case "outstation":
+                package_layout.setVisibility(View.GONE);
+                package_line.setVisibility(View.GONE);
+                break;
+        }
+
+        Log.i(TAG, book_id+" "+type+" "+vehicle+" "+pickup+" "+drop+" "+time);
+
+//        decline.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//            }
+//        });
+
+        accept.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                checkAvailability();
+            }
+        });
+
+        if (book_id.equals("0") && type.equals("0"))
+        {
+            data_avail.setVisibility(View.GONE);
+            no_data_avail.setVisibility(View.VISIBLE);
+        }
     }
 
+    private void checkAvailability() {
 
+        final ProgressDialog loading = ProgressDialog.show(getActivity(), "Getting your rides", "Please wait...", false, false);
+
+        loading.show();
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Config.CHECK_AVAIL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                loading.dismiss();
+                if (response.equals("success"))
+                {
+                    Toast.makeText(getActivity(), "You can take the ride", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(getContext(), MapsActivity.class);
+                    intent.putExtra(oriLata, ori_lat);
+                    intent.putExtra(oriLnga, ori_lng);
+                    intent.putExtra(desLata, dest_lat);
+                    intent.putExtra(desLnga, dest_lng);
+                    intent.putExtra(typeI, type);
+                    intent.putExtra(vehicleI, vehicle);
+                    intent.putExtra(packageI, package_type);
+                    startActivity(intent);
+                }
+                else
+                {
+                    Toast.makeText(getActivity(), "Sorry the ride has been taken", Toast.LENGTH_SHORT).show();
+                    data_avail.setVisibility(View.GONE);
+                    no_data_avail.setVisibility(View.VISIBLE);
+                    SharedPreferences shrp = Objects.requireNonNull(getActivity()).getSharedPreferences(NOTIFY_SHARED_PREFS,MODE_PRIVATE);
+                    shrp.edit().clear().apply();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                loading.dismiss();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                //Adding the parameters to the request
+                params.put("BOOK_ID", book_id);
+                params.put("TRAVEL_TYPE", type);
+                return params;
+            }
+        };
+
+        VolleySingleton.getInstance(getActivity()).addToRequestQueue(stringRequest);
+    }
 
     @Override
     public void onAttach(@NotNull Context context) {

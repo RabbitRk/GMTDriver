@@ -31,6 +31,7 @@ import static com.rabbitt.gmtdriver.Firebase.FirebaseMessengingService.TIME;
 import static com.rabbitt.gmtdriver.Firebase.FirebaseMessengingService.TYPE;
 import static com.rabbitt.gmtdriver.Firebase.FirebaseMessengingService.VEHICLE;
 import static com.rabbitt.gmtdriver.Firebase.FirebaseMessengingService.NOTIFY_SHARED_PREFS;
+import static com.rabbitt.gmtdriver.Firebase.FirebaseMessengingService.VEHICLE_ID;
 
 public class RideAlert extends AppCompatActivity {
     private static final String TAG = "RideAlert";
@@ -50,9 +51,10 @@ public class RideAlert extends AppCompatActivity {
     String ori_lng;
     String dest_lat;
     String dest_lng;
+    String vehicle_id;
     Toolbar toolbar;
 
-    TextView book_idTxt, typeTxt, vehicleTxt, package_idTxt, pickupTxt, dropTxt, timeTxt;
+    TextView book_idTxt, typeTxt, vehicleTxt, package_idTxt, pickupTxt, dropTxt, timeTxt, vehcile_no;
     RelativeLayout drop_layout, package_layout;
     View drop_line, package_line;
 
@@ -87,6 +89,7 @@ public class RideAlert extends AppCompatActivity {
         pickupTxt = findViewById(R.id.pickup);
         dropTxt = findViewById(R.id.drop);
         timeTxt = findViewById(R.id.timeat);
+        vehcile_no = findViewById(R.id.vehcile_no);
 
         //view initialization
         drop_layout = findViewById(R.id.drop_area);
@@ -107,6 +110,7 @@ public class RideAlert extends AppCompatActivity {
         ori_lng = shrp.getString(ORI_LNG, "0");
         dest_lat = shrp.getString(DEST_LAT, "0");
         dest_lng = shrp.getString(DEST_LNG, "0");
+        vehicle_id = shrp.getString(VEHICLE_ID, "0");
 
         //setting the info to the job alert page
         book_idTxt.setText(book_id);
@@ -116,6 +120,7 @@ public class RideAlert extends AppCompatActivity {
         dropTxt.setText(drop);
         timeTxt.setText(time);
         package_idTxt.setText(package_type);
+        vehcile_no.setText(vehicle_id);
 
         //visiblity controller
         switch (type)
@@ -147,24 +152,25 @@ public class RideAlert extends AppCompatActivity {
         ringtone.stop();
 
         //close the notification jon the notification bar
-        try {
-            NotificationManager notificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
-            notificationManager.cancelAll();
-        }
-        catch (Exception ex){
-            Log.i(TAG, "gotoNavigation: "+ex.getMessage());
-        }
 
-        Intent intent = new Intent(this, MapsActivity.class);
-        intent.putExtra(oriLata, ori_lat);
-        intent.putExtra(oriLnga, ori_lng);
-        intent.putExtra(desLata, dest_lat);
-        intent.putExtra(desLnga, dest_lng);
-        intent.putExtra(typeI, type);
-        intent.putExtra(vehicleI, vehicle);
-        intent.putExtra(packageI, package_type);
-
-        startActivity(intent);
+//        try {
+//            NotificationManager notificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+//            notificationManager.cancelAll();
+//        }
+//        catch (Exception ex){
+//            Log.i(TAG, "gotoNavigation: "+ex.getMessage());
+//        }
+//
+//        Intent intent = new Intent(this, MapsActivity.class);
+//        intent.putExtra(oriLata, ori_lat);
+//        intent.putExtra(oriLnga, ori_lng);
+//        intent.putExtra(desLata, dest_lat);
+//        intent.putExtra(desLnga, dest_lng);
+//        intent.putExtra(typeI, type);
+//        intent.putExtra(vehicleI, vehicle);
+//        intent.putExtra(packageI, package_type);
+//
+//        startActivity(intent);
     }
 
     public void stopAlarm(View view) {

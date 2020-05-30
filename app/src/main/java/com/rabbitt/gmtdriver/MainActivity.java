@@ -26,7 +26,7 @@ import com.rabbitt.gmtdriver.Utils.Config;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener, CurrentRide.OnFragmentInteractionListener, LocationListener {
+public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener, CurrentRide.OnFragmentInteractionListener, Earning.OnFragmentInteractionListener, LocationListener {
 
     private static final String TAG = "MainRk";
 
@@ -73,21 +73,14 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
 
         Fragment fragment = null;
-
         switch (menuItem.getItemId()) {
             case R.id.navigation_home:
                 fragment = new CurrentRide();
                 break;
-
             case R.id.navigation_service:
-                fragment = new PastRide();
-                break;
-
-            case R.id.navigation_product:
                 fragment = new Earning();
                 break;
         }
-
         return loadFragment(fragment);
     }
 
@@ -100,9 +93,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     public void onLocationChanged(Location location) {
         double user_lat = location.getLatitude();
         double user_lng = location.getLongitude();
-
         Log.i(TAG, "onLocationChanged: "+user_lat+user_lng);
-
         updateDriverLocation(user_lat, user_lng);
     }
 

@@ -4,17 +4,16 @@
 
     <item
         android:id="@+id/navigation_home"
-        android:icon="@drawable/ic_home_black_24dp"
-        android:title="Available Rides" />
-
-    <item
-        android:id="@+id/navigation_service"
-        android:icon="@drawable/ic_home_black_24dp"
         android:title="Finished Rides" />
 
     <item
-        android:id="@+id/navigation_product"
-        android:icon="@drawable/ic_home_black_24dp"
+        android:id="@+id/navigation_service"
         android:title="Earnings" />
+    <!--        android:icon="@drawable/ic_home_black_24dp"-->
+    <!--        android:icon="@drawable/ic_home_black_24dp"-->
+<!--    <item-->
+<!--        android:id="@+id/navigation_product"-->
+<!--        android:icon="@drawable/ic_home_black_24dp"-->
+<!--        android:title="Earnings" />-->
 
 </menu>

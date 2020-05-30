@@ -129,7 +129,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     SharedPreferences mpref;
     SharedPreferences.Editor mEditor;
 
-    LinearLayout after_layout;
+    LinearLayout after_layout, getRide;
     ProgressDialog p;
 
     Button cancel_btn, finish_btn;
@@ -149,6 +149,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         progressBar = findViewById(R.id.progressBar_cyclic);
         cancel_btn = findViewById(R.id.decline);
         finish_btn = findViewById(R.id.finished);
+        after_layout = findViewById(R.id.after_taken);
+        getRide = findViewById(R.id.getRide);
 
         //distance tracking code
         Intent intento = new Intent(this, OdometerService.class);
@@ -197,6 +199,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         progressBar.setVisibility(View.VISIBLE);
 
         init();
+
+        Log.i(TAG, "onCreate: "+oriLati+" "+oriLngi+" "+desLati+" "+desLngi);
     }
 
     private void init() {
@@ -204,6 +208,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         tv_timer = findViewById(R.id.timer);
 
         mpref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        mEditor = mpref.edit();
 //        mEditor = mpref.edit();
 
         try {
@@ -229,8 +234,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         } catch (Exception e) {
             Log.i(TAG, "init: "+e.getMessage());
         }
-
-
+        mEditor.apply();
     }
 
     public void startTimer()
@@ -249,7 +253,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 //
 //            mEditor.putString("data", date_time).commit();
 //            mEditor.putString("hours", "1").commit();
-//
 
             Intent intent_service = new Intent(getApplicationContext(), TimerService.class);
             startService(intent_service);
@@ -267,13 +270,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
 //        case R.id.btn_cancel:
-//
-//
-//
-//
-//            break;
-
-
+//        break;
     }
 
     private BroadcastReceiver timeReceiver = new BroadcastReceiver() {
@@ -530,6 +527,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface arg0, int arg1) {
+                        getRide.setVisibility(View.GONE);
                         after_layout.setVisibility(View.VISIBLE);
                         cancel_btn.setEnabled(false);
                         finish_btn.setEnabled(true);
@@ -659,6 +657,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //converting double to latlng
         oriLatlng = new LatLng(oriLat, oriLng);
         desLatlng = new LatLng(desLat, desLng);
+
+        Log.i(TAG, "typeFinding: "+oriLatlng+"   "+desLatlng);
 
         switch (type_) {
             case "rental":

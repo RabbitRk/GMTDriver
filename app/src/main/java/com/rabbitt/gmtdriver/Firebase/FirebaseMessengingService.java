@@ -37,6 +37,7 @@ public class FirebaseMessengingService extends FirebaseMessagingService {
     public static String BOOK_ID = "BOOK_ID";
     public static String TYPE = "TYPE";
     public static String VEHICLE = "VEHICLE";
+    public static String VEHICLE_ID = "VEHICLE_ID";
     public static String PICKUP = "PICKUP";
     public static String DROP = "DROP";
     public static String PACKAGE = "PACKAGE";
@@ -81,6 +82,7 @@ public class FirebaseMessengingService extends FirebaseMessagingService {
             String ori_lng = data.getString("ori_lng");
             String dest_lat = data.getString("dest_lat");
             String dest_lng = data.getString("dest_lng");
+            String vehicle_id = data.getString("v_no");
 
             Log.i("remote", "title..." + book_id);
             Log.i("remote", "body1..." + type);
@@ -92,6 +94,7 @@ public class FirebaseMessengingService extends FirebaseMessagingService {
             editor.putString(BOOK_ID, book_id);
             editor.putString(TYPE, type);
             editor.putString(VEHICLE, vehicle);
+            editor.putString(VEHICLE_ID, vehicle_id);
             editor.putString(PICKUP, pickup);
             editor.putString(DROP, drop);
             editor.putString(PACKAGE, package_type);
